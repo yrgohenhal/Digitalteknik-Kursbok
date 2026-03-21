@@ -4,7 +4,9 @@
 > "Det finns 10 olika typer av människor. De som förstår binära tal och de som inte förstår."  
 > — *Okänd*
 
-Välkommen till denna kursbok i digitalteknik!  Boken används som kurslitteratur i kursen Digitalteknik på Yrkeshögskolan Yrgo, Göteborg och utbildningarna till Elektronikingenjör. Den är skriven i Pandoc Markdown i verktyget Visual Studio Code med tillägget Quarto för rendering. Som stöd i skrivandet har AI använts, Gemini 3 Flash och ChatGPT GPT-5.3.
+Välkommen till denna kursbok i digitalteknik!  Boken används som kurslitteratur i kursen Digitalteknik på Yrkeshögskolan Yrgo, Göteborg och utbildningarna till Elektronikingenjör. Den är skriven i Pandoc Markdown i verktyget Visual Studio Code med tillägget Quarto för rendering. Som stöd i skrivandet har AI använts, främst Gemini 3 Flash men även ChatGPT GPT-5.3.
+
+Du hittar källkoden till denna kursbok på [GitHub](https://github.com/yrgohenhal/Digitalteknik-Kursbok).
 
 Kursboken är fri att använda under licensen [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
 
