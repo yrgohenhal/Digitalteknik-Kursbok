@@ -1,0 +1,15 @@
+# Quarto-genererat skräp
+/.quarto/
+/_book/
+
+# Operativsystem-specifikt (viktigt om du t.ex. byter mellan Mac och PC)
+.DS_Store
+Thumbs.db
+
+# LaTeX-filer (skapas vid rendering till PDF)
+*.log
+*.aux
+*.out
+*.toc
+*.pdfpc
+*.synctex.gz

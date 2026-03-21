@@ -1,0 +1,22 @@
+# Introduktion
+
+Digitaltekniken är fundamentet för det moderna samhället. Genom att representera 
+information som diskreta tillstånd – oftast som binära värden $0$ och $1$ – 
+har vi skapat system som kan hantera data med hög precision.
+
+## Historisk bakgrund
+* **George Boole:** Lade grunden för boolesk algebra på 1800-talet.
+* **Radiorör:** Användes i tidiga datorer som ENIAC.
+* **Transistorn (1947):** Den elektroniska strömbrytare som möjliggjorde dagens miniatyrisering.
+
+
+
+## Varför digitalteknik?
+
+| Egenskap | Analog teknik | Digital teknik |
+| :--- | :--- | :--- |
+| **Störningskänslighet** | Hög | Låg |
+| **Lagring** | Degradera över tid | Förlustfri |
+| **Flexibilitet** | Hårdvarubunden | Programvarubunden |
+
+Digitala system bygger på förmågan att tolka spänningsnivåer som logiska värden. När bara två spänningsnivåer (låg och hög) ska tolkas jämfört med analogtekniken där kontinuerliga spänningar ska hanteras, skapas en robust elektronik!

@@ -1,0 +1,73 @@
+project:
+  type: book
+
+book:
+  title: "Digitalteknik"
+  author: "Henrik Hallenberg"
+  date: "2026-03-22"
+  chapters:
+    - index.qmd
+    - 01-introduktion.qmd
+    - 02-talsystem.qmd
+    - 03-logiska-grindar.qmd
+    - 04-boolesk-algebra.qmd
+    - a1-referenser.qmd
+    - a2-appendix.qmd
+
+lang: sv
+
+format:
+  pdf:
+    documentclass: book
+    classoption:
+      - oneside
+      - openany
+    pdf-engine: lualatex
+    toc: true
+    toc-title: "Innehållsförteckning"
+    include-before-body: cover.tex
+    fig-align: left
+    include-in-header:
+      text: |
+        \usepackage{graphicx}
+        \usepackage{fancyhdr}
+        \usepackage[margin=2.5cm]{geometry}
+        \usepackage[siunitx]{circuitikz}
+        \usepackage{titlesec}
+        \usepackage{caption}
+
+        % Konfiguration för både tabeller och figurer
+        \captionsetup{
+          labelfont={bf,sf},   % Fetstil och sans-serif för "Tabell X" / "Figur X"
+          textfont={it,sf},    % Kursiv och sans-serif för själva texten
+        %  labelsep=period,     % Punkt efter numret istället för kolon
+          format=hang,         % Hängande indrag om texten är lång
+          justification=raggedright,
+          singlelinecheck=false
+        }
+
+        \makeatletter
+        \let\maketitle\relax
+        \makeatother
+
+        \titleformat{\chapter}[hang]
+          {\normalfont\huge\bfseries}
+          {\thechapter}
+          {1em}
+          {}
+
+        \fancypagestyle{framsida}{
+          \fancyhf{}
+          \fancyfoot[L]{Rev: 0.4}
+          \fancyfoot[C]{\thepage}
+          \fancyfoot[R]{Henrik Hallenberg}
+          \renewcommand{\footrulewidth}{0.4pt}
+        }
+
+        \fancypagestyle{plain}{
+          \fancyhf{}
+          \fancyfoot[C]{\thepage}
+          \renewcommand{\footrulewidth}{0pt}
+        }
+
+        \pagestyle{plain}

@@ -1,0 +1,610 @@
+# Talsystem och aritmetik för binära tal 
+
+## Positionssystemet
+I ett positionssystem beror en siffras värde på dess position i talet. För ett tal $N$ med basen $b$ kan vi uttrycka värdet som en summa av siffror multiplicerade med basens potenser:
+
+$$N = d_n b^n + \dots + d_1 b^1 + d_0 b^0$$
+
+Där $b$ är basen, $d$ är siffran på positionen och $n$ är positionens exponent.
+
+
+::: {.callout-note}
+## Exempel: Positionssystemet för talet 432
+För att förstå hur systemet fungerar kan vi bryta ner det decimala heltalet **432** (där $b=10$):
+
+* Siffran **4** står på positionen $10^2$ (hundratal): $4 \cdot 10^2 = 4 \cdot 100 = 400$
+* Siffran **3** står på positionen $10^1$ (tiotal): $3 \cdot 10^1 = 3 \cdot 10 = 30$
+* Siffran **2** står på positionen $10^0$ (ental): $2 \cdot 10^0 = 2 \cdot 1 = 2$
+
+Summerat blir detta:
+$$400 + 30 + 2 = 432_{10}$$
+:::
+
+
+Positionssystemets verkliga styrka är dess abstraktion. Att vi valt att använda basen 10 i vardagen är en biologisk slump (vi har tio fingrar), men matematiskt är systemet helt basoberoende. Inom digitaltekniken används binära tal (bas 2), vilket är den minsta möjliga basen för ett positionssystem. Detta är fundamentalt eftersom digitala kretsar består av miljarder transistorer som fungerar som strömbrytare – det är elektriskt säkrare att särskilja mellan två tillstånd (0 och 1) än tio.
+
+
+::: {.callout-note}
+## Exempel: Uppbyggnaden av talet 432 i binär form
+Om vi skriver det decimala talet **432** som ett binärt tal, ser det ut så här:
+
+$$432_{10} = 110110000_2$$
+
+För att förstå hur detta tal är uppbyggt behöver vi bara placera ut våra "bitar" på deras respektive platser (potenser av 2). Varje **1** representerar att den potensen ingår i summan, medan **0** betyder att den utelämnas:
+
+| Position ($2^n$) | $2^8$ | $2^7$ | $2^6$ | $2^5$ | $2^4$ | $2^3$ | $2^2$ | $2^1$ | $2^0$ |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Värde** | 256 | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+| **Bit** | **1** | **1** | **0** | **1** | **1** | **0** | **0** | **0** | **0** |
+
+**Vi kan nu kontrollera att summan stämmer:**
+$$(1 \cdot 256) + (1 \cdot 128) + (0 \cdot 64) + (1 \cdot 32) + (1 \cdot 16) + (0 \cdot 8) + (0 \cdot 4) + (0 \cdot 2) + (0 \cdot 1) = 432_{10}$$
+:::
+
+
+Heltal är bara en delmängd av alla tal. I det mer generella fallet med decimaltal kan ett tal $N$ med basen $b$ uttryckas med hjälp av negativa exponenter:
+
+$$N = d_n b^n + \dots + d_0 b^0 + d_{-1} b^{-1} + d_{-2} b^{-2} + \dots$$
+
+I Sverige används kommatecken (,) för att skilja heltalsdelen från decimaldelen. I många andra länder används istället punkt (.) som decimaltecken. De flesta relevanta standarder tillåter båda typerna av tecken, så länge man är konsekvent i dokumentation. Notera att mycket amerikansk litteratur använder punkt som decimaltecken och komma som tusenavskiljare, t.ex. så skrivs talet $12345,67$ som $12,345.67$.
+
+
+::: {.callout-note}
+## Exempel: Positionssystemet för 432,57
+Låt oss bryta ner det decimala talet **432,57** ($b=10$):
+
+**Heltalsdel:** $4 \cdot 10^2 + 3 \cdot 10^1 + 2 \cdot 10^0 = 400 + 30 + 2 = 432$
+
+**Decimaldel:** $5 \cdot 10^{-1} + 7 \cdot 10^{-2} = 0,5 + 0,07 = 0,57$
+
+Summerat: $432 + 0,57 = 432,57_{10}$
+:::
+
+
+I det binära systemet ($b=2$) fungerar "binärpunkten" på samma sätt. Positionerna till höger om punkten representerar negativa potenser av 2:
+
+* $2^{-1} = 0,5$
+* $2^{-2} = 0,25$
+* $2^{-3} = 0,125$
+
+Det binära systemet har en inneboende begränsning när det gäller att representera decimaltal exakt. Precis som att vissa bråk i det decimala systemet får en oändlig periodisk decimalutveckling (t.ex. $1/3 \approx 0,333...$), kan många enkla decimaltal inte representeras med ett ändligt antal binära bitar.
+
+För att hantera detta används i datorer en standard som kallas **flyttal**. Istället för en fast punkt lagrar datorn talet som en **signifikand** (själva talvärdet) och en **exponent** (som anger var punkten ska placeras). Detta gör att vi kan representera både extremt stora och extremt små tal, men med en kompromiss: vi får en begränsad **precision**. När talet inte går att uttrycka exakt med de tillgängliga bitarna sker en avrundning, vilket är viktigt att känna till vid känsliga beräkningar.
+
+## Decimala, binära och hexadecimala systemet
+
+I digitaltekniken arbetar vi främst med tre talsystem som var och en tjänar ett specifikt syfte:
+
+* **Decimalt (bas 10):** Vår vardagsmatematik. Används främst för kommunikation mellan människa och maskin (input/output).
+* **Binärt (bas 2):** Grunden för all digital elektronik. 
+* **Hexadecimalt (bas 16):** Ett kompakt sätt att representera binära data. Eftersom en binär sträng snabbt blir svårläst för en människa (t.ex. $11101011_2$), grupperar vi bitarna för att skapa hexadecimala tecken ($0-9, A-F$).
+
+### Binära tal och logik
+Kärnan i det binära systemet är att det mappar perfekt mot logikens värld. I en digital krets representerar vi talen som spänningsnivåer. Detta översätts direkt till **boolesk logik**, där:
+
+* **1** motsvarar "Sant" (High/On, t.ex. 5V).
+* **0** motsvarar "Falskt" (Low/Off, t.ex. 0V).
+
+Detta gör att varje binär siffra (bit) blir en logisk variabel, vilket är fundamentet för hur datorns processorer bygger upp komplexa beslut genom enkla grindar som AND, OR och NOT.
+
+### Index-notering för talbaser
+För att undvika missförstånd när vi blandar olika talsystem i samma text, använder vi ett **index** (subscript). Talbasen skrivs som ett litet tal efter själva värdet:
+
+* $234_{10}$ betyder talet 234 i bas 10.
+* $11101010_2$ betyder ett binärt tal.
+* $EA_{16}$ betyder ett hexadecimalt tal.
+
+Nedan presenteras en jämförelse av hur talen 0 till 15 representeras i de tre vanligaste talsystemen inom digitalteknik.
+
+Table: Jämförelse av talsystem (0–15) {#tbl-talsystem}
+
+| Decimalt | Binärt | Hexadecimalt |
+| :--- | :--- | :--- |
+| 0 | 0000 | 0 |
+| 1 | 0001 | 1 |
+| 2 | 0010 | 2 |
+| 3 | 0011 | 3 |
+| 4 | 0100 | 4 |
+| 5 | 0101 | 5 |
+| 6 | 0110 | 6 |
+| 7 | 0111 | 7 |
+| 8 | 1000 | 8 |
+| 9 | 1001 | 9 |
+| 10 | 1010 | A |
+| 11 | 1011 | B |
+| 12 | 1100 | C |
+| 13 | 1101 | D |
+| 14 | 1110 | E |
+| 15 | 1111 | F |
+
+Som framgår av @tbl-talsystem motsvarar en enda hexadecimal siffra (0–F) exakt fyra binära bitar. Denna gruppering, ofta kallad en "nibble", är anledningen till att hexadecimal form är så effektiv för att representera binära data.
+
+
+::: {.callout-note}
+## Exempel: Talet 234 i olika system
+Låt oss se hur det decimala talet **234** representeras i de tre vanligaste systemen:
+
+| System | Representation |
+| :--- | :--- |
+| **Decimalt** | $234_{10}$ |
+| **Binärt** | $11101010_2$ |
+| **Hexadecimalt** | $EA_{16}$ |
+
+**Kort förklaring:**
+
+* **Decimalt:** Vårt vanliga sätt att räkna.
+* **Binärt:** $128 + 64 + 32 + 8 + 2 = 234$.
+* **Hexadecimalt:** $E$ (som är 14) gånger $16^1$ plus $A$ (som är 10) gånger $16^0$ ger $224 + 10 = 174$. 
+:::
+
+
+### Bit, nibble och byte?
+
+Inom digitaltekniken grupperar vi binära siffror för att kunna hantera komplex information effektivare. Här är de grundläggande enheterna vi använder:
+
+* **Bit (Binary Digit):** Den minsta informationsenheten. En bit kan anta värdet 0 eller 1 och motsvarar ett logiskt tillstånd (sant/falskt).
+* **Nibble:** En grupp om **4 bitar**. En nibble kan representera 16 olika värden ($2^4$), vilket gör att den motsvarar exakt ett hexadecimalt tecken (0–F).
+* **Byte:** En grupp om **8 bitar**. Byten är den standardiserade grundenheten för nästan all datalagring och minnesadressering. En byte kan representera $2^8 = 256$ unika kombinationer.
+* **Word:** Storleken på ett "ord" varierar beroende på arkitektur (t.ex. 16, 32 eller 64 bitar) och representerar den mängd data som processorn kan bearbeta i en enda operation.
+
+Genom att använda @tbl-talsystem kan vi se att en nibble är bryggan mellan det binära systemet och den mer läsbara hexadecimala notationen. När vi arbetar med minnesadresser eller register i en processor, används nästan uteslutande att tala i termer av bytes och ordlängder.
+
+I en historisk kontext hittar vi anledningen till att vi ofta grupperar bitar i 4, 8, 16 osv. Det skapar en direkt matematisk koppling till både det hexadecimala talsystemet och datorns minnesstruktur. Utvecklingen av datorarkitekturer har varit en ständig kamp mellan behovet av mer beräkningskraft och de fysiska begränsningarna i kisel.
+
+* **Intel 4004 (1971):** Världens första kommersiellt tillgängliga mikroprocessor. Det var en **4-bitars processor**, vilket innebär att dess "ordlängd" var precis en **nibble**. Den var primärt designad för miniräknare och kunde adressera en mycket begränsad mängd minne.
+* **Intel 8008 & 8080 (1972/1974):** Tog steget till **8-bitars arkitektur**. Här blev **byten** den naturliga standarden för datalagring, vilket vi fortfarande lever med idag. Det gjorde det möjligt att hantera tecken (ASCII) och mer komplexa instruktionsuppsättningar.
+* **16- till 64-bitar:** Under 80- och 90-talen skedde en snabb utveckling där ordlängden fördubblades med jämna mellanrum för att kunna hantera större minnesadresser (RAM) och mer komplexa datatyper som flyttal.
+
+När vi idag pratar om "32-bitars" eller "64-bitars" operativsystem, refererar vi direkt till hur stor den interna ordlängden i processorn är. En 64-bitars processor kan hantera astronomiska mängder minnesadresser ($2^{64}$ stycken), vilket var helt otänkbart för ingenjörerna bakom Intel 4004.
+
+### MSB och LSB: Bitarnas vikt
+
+I ett positionssystem har varje position i ett tal ett specifikt "värde" (vikt). Precis som att siffran längst till vänster i ett decimalt tal (t.ex. "4" i 432) representerar det största värdet (hundratal), har vi motsvarande begrepp för binära tal för att identifiera vilken bit som bär mest respektive minst information.
+
+* **MSB (Most Significant Bit):** Den "mest signifikanta biten". Detta är biten som har högst vikt, det vill säga den bit som står längst till vänster i talet. Den har störst påverkan på talets totala värde.
+* **LSB (Least Significant Bit):** Den "minst signifikanta biten". Detta är biten med lägst vikt, som står längst till höger (entalspositionen). Den avgör bara om talet är jämnt (0) eller udda (1).
+
+
+::: {.callout-note}
+## Exempel: Viktning av bitar i talet $1101_2$
+I det binära talet **$1101_2$** ser vi tydligt hur vikten fördelas:
+
+| Position | $2^3$ (8) | $2^2$ (4) | $2^1$ (2) | $2^0$ (1) |
+| :--- | :---: | :---: | :---: | :---: |
+| **Bit** | **1** | 1 | 0 | **1** |
+| **Betydelse** | **MSB** | | | **LSB** |
+
+* **MSB** har vikten $2^3 = 8$. Ändras denna bit, ändras talets värde med 8.
+* **LSB** har vikten $2^0 = 1$. Ändras denna bit, ändras talets värde bara med 1.
+:::
+
+
+Att förstå vilken bit som är MSB och vilken som är LSB är fundamentalt för hur processorer hanterar data. Det är avgörande för det som kallas **Endian** (i vilken ordning bytes lagras i minnet eller ordningen bitar skickas i seriell kommunikation) och när vi utför logiska skiftoperationer, där vi antingen "skiftar ut" MSB eller LSB för att manipulera talets storlek eller tecken.
+
+## Konverteringar mellan talsystem
+
+Att kunna konvertera mellan talsystem är en fundamental färdighet för att förstå hur data flyttas och tolkas i en dator.
+
+### Decimalt $\leftrightarrow$ Binärt
+
+#### Decimalt till binärt (Division med 2)
+Metoden går ut på att upprepade gånger dividera talet med 2 och notera resten. Vi läser sedan resterna nerifrån och upp. Det kan vara förvirrande att första divisionen med $$/ 2$ ger LSB och den sista ger MSB. Men första divisionen talar om huruvida det binära talet är jämnt eller udda, vilket motsvarar den bit som har vikten $2^0$ och positionen $0$. Sista divisionen indikerar hur stort talet är. Förr eller senare kommer divisionen ge svaret $0$, och när det händer så har vi kommit till den bit som har den högsta positionen $2^n$. Det motsvarar då MSB.
+
+::: {.callout-note}
+## Exempel: Omvandla $13_{10}$ till binärt
+1. $13 / 2 = 6$ med rest **1** (LSB)
+2. $6 / 2 = 3$ med rest **0**
+3. $3 / 2 = 1$ med rest **1**
+4. $1 / 2 = 0$ med rest **1** (MSB)
+
+Läst nerifrån och upp får vi: $1101_2$.
+:::
+
+
+#### Binärt till decimalt (Positionell summering)
+
+Här multiplicerar vi varje bit med dess tillhörande potens av 2 och summerar resultaten.
+
+
+::: {.callout-note}
+## Exempel: Omvandla $1011_2$ till decimalt
+$(1 \cdot 2^3) + (0 \cdot 2^2) + (1 \cdot 2^1) + (1 \cdot 2^0)$
+$= 8 + 0 + 2 + 1 = 11_{10}$
+:::
+
+
+### Binärt $\leftrightarrow$ Hexadecimalt
+
+Det hexadecimala systemet är effektivt att skriva jämfört med det binära eftersom $16 = 2^4$. Det betyder att exakt fyra binära bitar motsvarar en hexadecimal siffra.
+
+#### Binärt till hexadecimalt (Gruppering)
+
+Dela upp den binära strängen i grupper om 4 bitar, räknat från höger (LSB).
+
+
+::: {.callout-note}
+## Exempel: Omvandla $111101_2$ till hexadecimalt
+1. Gruppering: $0011$ | $1101$ (två extra nollor läggs till i början för att ge en full nibble)
+2. Omvandla varje grupp: $3$ | $D$
+
+Resultat: $3D_{16}$
+:::
+
+
+#### Hexadecimalt till binärt (Expansion)
+
+Varje hexadecimalt tecken översätts direkt till dess 4-bitars binära motsvarighet.
+
+
+::: {.callout-note}
+## Exempel: Omvandla $A5_{16}$ till binärt
+1. $A = 1010$
+2. $5 = 0101$
+
+Resultat: $10100101_2$
+:::
+
+
+Som framgår av **@tbl-talsystem** är nibble-strukturen (4 bitar) nyckeln till enkel konvertering mellan binära och hexadecimala tal.
+
+### Binär aritmetik
+
+Binär aritmetik bygger på samma principer som decimal räkning, men med en mycket begränsad sifferuppsättning (0 och 1), vilket gör den idealisk för digitala kretsar.
+
+### Addition och subtraktion
+
+Addition utförs kolumnvis från höger till vänster. En "minnessiffra" (carry) uppstår när summan i en kolumn blir 2 eller mer ($1+1 = 10_2$). Denna carry förs över till nästa kolumn till vänster.
+
+
+::: {.callout-note}
+## Exempel: Binär addition ($7_{10} + 5_{10}$)
+
+För att tydliggöra *carry* (minnessiffror) ställer vi upp talen i kolumner:
+
+$$
+\begin{array}{r@{\quad}l}
+  \text{Carry: } & \color{red}{0110} \\
+  & 0111_2 \quad (7_{10}) \\
++ & 0101_2 \quad (5_{10}) \\
+\hline
+  & 1100_2 \quad (12_{10})
+\end{array}
+$$
+
+$\Rightarrow$ **Förklaring:** I varje kolumn där summan överstiger $1$, skickas en $1$ (carry) till nästa kolumn till vänster.
+:::
+
+
+Subtraktion hanteras enklast genom att låna från nästa högre position (borrow), på samma sätt som i decimal subtraktion.
+
+
+::: {.callout-note}
+## Exempel: Binär subtraktion ($6_{10} - 1_{10}$)
+
+$$
+\begin{array}{r@{\quad}l}
+  \text{Lån: } & \phantom{0}\color{red}{0010} \\
+  & 0110_2 \quad (6_{10}) \\
+- & 0001_2 \quad (1_{10}) \\
+\hline
+  & 0101_2 \quad (5_{10})
+\end{array}
+$$
+
+$\Rightarrow$ **Förklaring:** För att räkna $0-1$ i position $2^0$ lånar vi från position $2^1$. Den positionen blir då 0, och vi får värdet 2 ($10_2$) till position $2^0$. Nu räknar vi $(2+0)-1 = 1$.
+:::
+
+
+### Multiplikation och division
+
+Att multiplicera eller dividera med potenser av $2^n$ är extremt effektivt genom att använda bit-skiftningar.
+
+
+::: {.callout-note}
+## Exempel: Vänsterskift (Multiplikation med 2)
+$$
+\begin{array}{r@{\quad}l}
+  \text{Innan:} & 0011_2 \quad (3_{10}) \\
+  \text{Skift:} & \leftarrow 1 \\
+  \hline
+  \text{Efter:} & 0110_2 \quad (6_{10})
+\end{array}
+$$
+$\Rightarrow$ **Förklaring:** Varje bit flyttas ett steg till vänster, vilket fördubblar dess vikt ($2^0$ blir $2^1$ osv).
+:::
+
+
+::: {.callout-note}
+## Exempel: Högerskift (Division med 2)
+$$
+\begin{array}{r@{\quad}l}
+  \text{Innan:} & 1010_2 \quad (10_{10}) \\
+  \text{Skift:} & 1 \rightarrow \\
+  \hline
+  \text{Efter:} & 0101_2 \quad (5_{10})
+\end{array}
+$$
+$\Rightarrow$ **Förklaring:** Bitarna flyttas ett steg till höger. Den minst signifikanta biten (LSB) "faller av" och går förlorad.
+:::
+
+
+::: {.callout-note}
+## Exempel: Multiplikation med 4 ($2^2$)
+Att multiplicera med 4 motsvarar ett skift två steg åt vänster.
+
+$$
+\begin{array}{r@{\quad}l}
+  \text{Tal:} & 00101100_2 \quad (44_{10}) \\
+  \text{Skift 2 steg:} & \leftarrow 2 \\
+  \hline
+  \text{Resultat:} & 10110000_2 \quad (176_{10})
+\end{array}
+$$
+:::
+
+
+Om vi begränsat multiplikationen genom att exempelvis bara använda en byte och hade startat med ett tal där bitar flyttas utanför det 8-bitars fönstret som begränsar en byte, skulle dessa höga bitar gå förlorade. Detta kallas för ett *overflow*. Hårdvaran kan då inte längre representera det korrekta värdet, vilket resulterar i ett matematiskt fel.
+
+
+::: {.callout-note}
+## Exempel: Multiplikation med 8 ($2^3$) och overflow
+Att multiplicera med 8 motsvarar ett skift tre steg åt vänster. Här kommer detta leda till *overflow*.
+
+$$
+\begin{array}{r@{\quad}l}
+  \text{Tal:} & 00101100_2 \quad (44_{10}) \\
+  \text{Skift 3 steg:} & \leftarrow 3 \\
+  \hline
+  \text{Resultat:} & \textcolor{red}{1}\textcolor{black}{01100000}_2 \quad (tolkas som 96_{10} och inte 352_{10})
+\end{array}
+$$
+
+Här ger multiplikationen alltså ett fel när MSB går förlorad i overflow.
+:::
+
+
+Metodiken som beskrivits ovan för addition, subtraktion, multiplikation och division fungerar även decimaltal, men begränsningen vid multiplikation och division är att multiplikator respektive divisor är ett heltal baserat på faktor 2. Vid allmän multiplikation/division med godtyckliga tal krävs mer komplexa algoritmer där man iterativt även utför addition eller subtraktion. Division är den mest resurskrävande operationen och tar betydligt fler klockcykler i en processor än en enkel addition.
+
+## Hantering av negativa tal
+
+För att representera negativa tal i datorer används olika metoder för att möjliggöra effektiv aritmetik. Här går vi igenom de vanligaste sätten. Vi inleder med unsigned, som inte kan hantera negativa tal men är en start för att visa olika sätt att hantera negativa tal inom digitaltekniken. Här begränsas exemplen till 8-bitars tal, men de gäller generellt.
+
+### Unsigned (Osignerade tal)
+
+Alla bitar används för att representera positiva värden. En byte kan då representera talen $0$ till $2^8 - 1$ ($0$ till $255_{10}$ eller binärt $11111111_2$).
+
+
+::: {.callout-note}
+## Exempel: 8-bitars unsigned
+Talet $00000101_2$ representerar:
+$1 \cdot 2^2 + 1 \cdot 2^0 = 4 + 1 = 5_{10}$.
+
+Talet $10000000_2$ representerar:
+$1 \cdot 2^7 = 128_{10}$.
+:::
+
+
+### Signed (Signed-Magnitude, Tecken-belopp)
+
+MSB (den mest signifikanta biten) används som teckenbit ($0 = +, 1 = -$). 
+
+**Fördelar:**
+
+* Enkelt att läsa ut talet: läs MSB som tecken och resterande 7 bitar som talets värde.
+* Enkelt att läsa absolutbeloppet genom att maskera bort MSB.
+
+**Nackdelar:**
+
+* Två representationer för noll ($+0$ och $-0$).
+* Addition och subtraktion kräver komplex logik för att hantera teckenbitar separat.
+* Hårdvaran blir betydligt mer komplex då processorn måste kontrollera tecken innan beräkning.
+
+
+::: {.callout-note}
+## Exempel: 8-bitars Signed-Magnitude
+* $+5_{10}$ blir $00000101_2$
+* $-5_{10}$ blir $10000101_2$
+* Adderas dessa tal genom enkel addition blir resultatet $00000101_2 + 10000101_2 = 10001010_2 = 138_{10}$ och inte $0$ som man förväntar sig.
+* Talet $10000000_2$ blir $-0$, vilket är onödigt då det redan finns ett tal för $0$.
+:::
+
+
+### 1-komplement
+
+I 1-komplement representeras negativa tal genom att invertera alla bitar i det motsvarande positiva talets representation (där en "0"-bit i MSB-positionen indikerar ett positivt tal). 
+
+**Fördelar:**
+
+* Enkelt att generera ett negativt tal genom invertering.
+
+**Nackdelar:**
+
+* **Dubbla nollor:** Det finns två representationer för noll: $+0$ ($00000000_2$) och $-0$ ($11111111_2$).
+* **Hårdvarukomplexitet:** Subtraktion (och addition av negativa tal) kräver en extra logisk operation, en så kallad *end-around carry*, där en eventuell carry-bit från MSB måste adderas tillbaka till LSB-positionen.
+
+
+::: {.callout-note}
+## Exempel: $5_{10} - 3_{10}$ i 8-bitars 1-komplement
+
+1. **Konvertering:** $5_{10} = 00000101_2$ och $3_{10} = 00000011_2$.
+2. **1-komplement:** Invertera bitarna i $3_{10} \rightarrow 11111100_2$.
+3. **Addition:**
+
+$$
+\begin{array}{r@{\quad}l}
+   00000101 & (5) \\
++  11111100 & (-3) \\
+\hline
+(1)00000001 & 
+\end{array}
+$$
+
+4. **End-around carry:** Addera carry-biten från MSB till LSB:
+
+$$
+\begin{array}{r@{\quad}l}
+   00000001 & \\
++  1 & \\
+\hline
+   00000010 & (2)
+\end{array}
+$$
+:::
+
+
+### 2-komplement
+
+I 2-komplement representeras negativa tal genom att man tar 1-komplementet av det positiva talet och därefter adderar 1. 
+
+::: {.callout-note}
+## Exempel: $-5_{10}$ i 8-bitars 2-komplement
+1. **Positivt tal (+5):** `0000 0101`
+2. **Invertera alla bitar:** `1111 1010`
+3. **Addera 1:** `1111 1011`
+**Resultat:** $-5_{10}$ representeras som `1111 1011`.
+:::
+
+
+**Fördelar:**
+
+* **Endast en nolla existerar:** $00000000_2$ är $+0$. Det finns ingen $-0$.
+* **Effektiv hårdvara:** Subtraktion utförs genom vanlig addition, vilket gör att en och samma krets kan hantera både addition och subtraktion utan extra korrigeringssteg.
+
+**Nackdelar:**
+
+* Intervallet är asymmetriskt; det finns ett negativt tal mer än det finns positiva tal (för $n$ bitar: $-2^{n-1}$ till $2^{n-1} - 1$).
+* Det är svårare (som människa) att läsa ut värdet på ett negativt tal.
+
+
+::: {.callout-note}
+## Exempel: Subtraktion $5_{10} - 3_{10}$ i 8-bitars 2-komplement
+1. **Konvertering:** $5_{10} = 00000101_2$. 
+2. **2-komplement av 3:** * Invertera $00000011_2 \rightarrow 11111100_2$ (1-komplement)
+3. Addera $1 \rightarrow 11111101_2$ (2-komplement av $-3$)
+4. **Addition:**
+
+$$
+\begin{array}{r@{\quad}l}
+   00000101 & (5) \\
++  11111101 & (-3) \\
+\hline
+(1)00000010 & 
+\end{array}
+$$
+
+4. **Resultat:** Carry-biten (1:an till vänster) ignoreras. Resultatet blir $00000010_2$, vilket är $2_{10}$.
+:::
+
+
+Här kommer ett snabbtips för tolkning av ett negativt 2-komplementtal. Man kan nämligen snabbt tolka ett 2-komplement-tal genom att ge MSB en negativ vikt ($-2^{n-1}$):
+
+| Bitpos. | $2^7$ | $2^6$ | $2^5$ | $2^4$ | $2^3$ | $2^2$ | $2^1$ | $2^0$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Vikt** | **-128** | **64** | **32** | **16** | **8** | **4** | **2** | **1** |
+
+
+::: {.callout-note}
+## Exempel: Tolkning av $-5_{10}$ i 8-bitars 2-komplement
+
+För att omvandla bitmönstret $11111011_2$ till ett decimalt tal, multiplicerar vi varje bit med dess vikt, där MSB (position 7) har vikten $-2^7 = -128$:
+
+$$
+\begin{aligned}
+(-1 \cdot 128) &+ (1 \cdot 64) + (1 \cdot 32) + (1 \cdot 16) + (1 \cdot 8) + (0 \cdot 4) + (1 \cdot 2) + (1 \cdot 1) \\
+= -128 &+ 64 + 32 + 16 + 8 + 0 + 2 + 1 \\
+= -128 &+ 123 \\
+= \mathbf{-5_{10}}
+\end{aligned}
+$$
+:::
+
+
+Anledningen till att 2-komplement är standard i moderna processorer är alltså att subtraktion kan utföras som vanlig addition. För att räkna $A - B$, beräknar processorn $A + (\text{2-komplement av } B)$. Kretslösningen för aritmetiska beräkningar blir då ganska enkel. 
+
+## Koder och representationer
+
+För att digitala system ska kunna kommunicera med omvärlden, lagra text eller styra fysiska processer räcker det inte med binära tal. Vi använder olika koder för att mappa binära mönster till specifik information.
+
+### BCD (Binary Coded Decimal)
+
+I BCD-kod representeras varje decimal siffra (0–9) av en 4-bitars binär kod. Det är praktiskt vid numeriska gränssnitt, exempelvis för att styra sjusegmentdisplayer.
+
+Table: Jämförelse av talsystem (0–9) och BCD-kod {#tbl-ascii}
+
+| Decimal | BCD | Decimal | BCD |
+| :--- | :--- |
+| 0 | 0000 |
+| 1 | 0001 |
+| 2 | 0010 |
+| 3 | 0011 |
+| 4 | 0100 |
+| 5 | 0101 |
+| 6 | 0110 |
+| 7 | 0111 |
+| 8 | 1000 |
+| 9 | 1001 |
+
+### Gray-kod
+
+Gray-kod är en reflekterad binär kod där endast **en bit ändras** när man räknar upp från ett tal till nästa. Detta är till nytta i bland annat mekaniska positionssensorer (encoders) för att undvika felaktiga mellanlägen.
+
+Table: Jämförelse av talsystem (0–15) och motsvarande Gray-kod {#tbl-graykod}
+
+| Decimal | Binär | Gray-kod |
+| :---: | :---: | :---: |
+| 0 | 0000 | 0000 |
+| 1 | 0001 | 0001 |
+| 2 | 0010 | 0011 |
+| 3 | 0011 | 0010 |
+| 4 | 0100 | 0110 |
+| 5 | 0101 | 0111 |
+| 6 | 0110 | 0101 |
+| 7 | 0111 | 0100 |
+| 8 | 1000 | 1100 |
+| 9 | 1001 | 1101 |
+| 10 | 1010 | 1111 |
+| 11 | 1011 | 1110 |
+| 12 | 1100 | 1010 |
+| 13 | 1101 | 1011 |
+| 14 | 1110 | 1001 |
+| 15 | 1111 | 1000 |
+
+
+### ASCII
+
+ASCII är en standard för att representera tecken numeriskt. Varje tecken tilldelas ett 7-bitars värde enligt originalstandarden (ofta lagrat i en byte). Finns uppdatering av standarden med 8-bitars kod.
+
+Table: Några exempel på ASCII-koder. Att notera, ASCII är strukturerad så att konvertering mellan gemener och versaler kan göras med en enkel bit-operation. {#tbl-ascii}
+
+| Tecken | Binär (7 bit) | Hex |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| '0' | 011 0000 | 30 |
+| '9' | 011 1001 | 39 |
+| 'a' | 110 0001 | 61 |
+| 'z' | 111 1010 | 7A |
+| 'A' | 100 0001 | 41 |
+| 'Z' | 101 1010 | 5A |
+| Space | 010 0000 | 20 |
+
+Exempel på full 7-bitars ASCII finns under Appendix.
+
+### Paritetsbit (Feldetektering)
+
+En paritetsbit läggs till i ett ord för att kontrollera integriteten vid dataöverföring.
+
+* **Jämn paritet (Even parity):** Paritetsbiten sätts så att det totala antalet ettor i ordet blir jämnt.
+* **Udda paritet (Odd parity):** Paritetsbiten sätts så att det totala antalet ettor i ordet blir udda.
+
+
+::: {.callout-note}
+## Exempel: Feldetektering med jämn paritet
+
+Skicka dataordet $1011_2$ med **jämn paritet**.
+
+1. Räkna antal ettor i dataordet: Det finns tre ettor ($1, 0, 1, 1$). 
+2. Eftersom tre är udda, måste paritetsbiten vara `1` för att det totala antalet ettor ska bli jämnt ($3 + 1 = 4$).
+3. Resultat: Den sända sekvensen blir `10111`.
+4. Om mottagaren vid kontroll räknar ettorna och får ett udda antal (t.ex. $10101$ = 3 ettor), vet systemet direkt att ett fel inträffat.
+:::
+
+

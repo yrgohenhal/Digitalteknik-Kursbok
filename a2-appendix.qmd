@@ -1,0 +1,20 @@
+# Appendix {-}
+
+\newpage
+
+## ASCII-tabell {- #sec-ascii}
+
+ASCII - American Standard Code for Information Interchange.
+
+Ursprunget till ASCII är en standardisering av en 7-bitars kod för teleprinter. Standarden innehåller både styrtecken och skrivbara tecken. Senare utökades ASCII till 8-bitarsvarianter (så kallad Extended ASCII), som möjliggjorde representation av ytterligare tecken såsom å, ä och ö. Denna begränsning i antal tecken ledde i sin tur till utvecklingen av Unicode, som i dag är den dominerande standarden för att representera tecken från världens alla skriftsystem.
+
+::: {#fig-ascii}
+![](images/a1-appendix/USASCII_code_chart.png){width=80%}
+
+**Figurtext:** Fullständig ASCII-tabell. *Källa: Från Wikipedia, By An unknown officer or employee of the United States Government - File:USASCII code chart.png, MIL-STD-188-100, pg. B-2, Fig 1, 1972. (different scan), Public Domain, https://commons.wikimedia.org/w/index.php?curid=152723332*.
+
+:::
+
+\newpage
+
+## Annat appendix {- #sec-annat}

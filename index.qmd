@@ -1,0 +1,18 @@
+# Förord {.unnumbered}
+
+
+> "Det finns 10 olika typer av människor. De som förstår binära tal och de som inte förstår."  
+> — *Okänd*
+
+Välkommen till denna kursbok i digitalteknik!  Boken används som kurslitteratur i kursen Digitalteknik på Yrkeshögskolan Yrgo, Göteborg och utbildningarna till Elektronikingenjör. Den är skriven i Pandoc Markdown i verktyget Visual Studio Code med tillägget Quarto för rendering. Som stöd i skrivandet har AI använts, Gemini 3 Flash och ChatGPT GPT-5.3.
+
+Kursboken är fri att använda under licensen [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+
+Bildmaterial är skapat av författaren, alternativt kommer från Wikipedia. I det senare fallet står upphovsperson och vilken Crative Commons-licens som är aktuell i figurtexten.
+
+Kretsscheman är skapade i Kicad 9.0.
+
+Karnaughdiagram är skapade med onlineverktyget Karnaugh Map (K-Map) Solver, https://karnaughmapsolver.com/.
+
+Titelbladet visar ett fotografi på Intel 8008.
+Källa: Av Konstantin Lanzet - CPU Collection Konstantin LanzetCamera: Canon EOS 400D, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=5694177
