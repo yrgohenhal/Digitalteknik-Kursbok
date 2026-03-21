@@ -11,7 +11,7 @@ book:
     - 02-talsystem.qmd
     - 03-logiska-grindar.qmd
     - 04-boolesk-algebra.qmd
-    - 05-kombinatoriska-kretsar
+    - 05-kombinatoriska-kretsar.qmd
     - a1-referenser.qmd
     - a2-appendix.qmd
 

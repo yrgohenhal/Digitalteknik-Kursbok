@@ -31,7 +31,7 @@ Grunden i all digital beräkning är förmågan att addera två binära tal. Fö
 ### Halvadderaren (Half-Adder)
 En halvadderare kan lägga ihop två bitar, $A$ och $B$, och leverera en summa ($S$) samt en minnessiffra, så kallad "carry out" ($C_{out}$).
 
-Table: Sanningstabell för **halvadderare**. Halvadderaren har två utgångar, en som visar summan och en som visar minnessiffran (carry) {#tbl-halvadderare}
+Table: Sanningstabell för **halvadderare**. Halvadderaren har två utgångar, en som visar summan och en som visar minnessiffran (carry). {#tbl-halvadderare}
 
 | A | B | Summa (S) | Carry (C) |
 |---|---|-----------|-----------|
@@ -40,15 +40,15 @@ Table: Sanningstabell för **halvadderare**. Halvadderaren har två utgångar, e
 | 1 | 0 |     1     |     0     |
 | 1 | 1 |     0     |     1     |
 
-Som vi ser i tabellen motsvaras Summan av en **XOR**-funktion och Carry-signalen av en **AND**-funktion.
+Som vi ser i @tbl-halvadderare motsvaras Summan $S$ av en **XOR**-funktion och Carry-signalen $C$ av en **AND**-funktion.
 
-### 5.1.2 Heladderaren (Full-Adder)
+### Heladderaren (Full-Adder)
 
 Begränsningen med en halvadderare är att den bara kan hantera två bitar. När vi adderar flersiffriga tal för hand skriver vi ofta en "minnessiffra" ovanför nästa kolumn. I digitaltekniken kallas detta för en **Carry In** ($C_{in}$). Minnessiffran blir då en tredje bit som ska ingå i summeringen. 
 
 En **heladderare** har därför tre ingångar: $A$, $B$ och $C_{in}$. Den levererar precis som tidigare en summa ($S$) och en Carry-out ($C_{out}$).
 
-**Sanningstabell för heladderaren:**
+Table: Sanningstabell för **heladderare**. Heladderaren hanterar tre ingångar så att addition med minnessiffra kan genomföras. {#tbl-heladderare}
 
 | $A$ | $B$ | $C_{in}$ | Summa ($S$) | $C_{out}$ |
 |:---:|:---:|:--------:|:-----------:|:---------:|
