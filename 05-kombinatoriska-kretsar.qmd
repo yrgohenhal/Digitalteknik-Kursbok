@@ -84,9 +84,7 @@ En 3-bitars adderare kan skapas med en halvadderare för LSB (position 0, det vi
 #### Carry Look-Ahead (CLA) – Snabbare addition
 Även om Ripple Carry-adderaren är enkel att förstå och bygga, har den en stor nackdel i system som kräver snabba beräkningar: **tidsfördröjning**. 
 
-Varje grind i kretsen tar några nanosekunder på sig att reagera. Innan den sista biten adderas (MSB) i en adderare kan visa ett korrekt värde, måste carry-signaler från tidigare additioner ha vandrat genom alla föregående steg. Ju fler bitar vi adderar, desto långsammare blir kretsen. I moderna processorer använder man därför mer avancerade tekniker (som *Carry Look-Ahead*) för att förutse carry-signalen och öka hastigheten.
-
-För att lösa problemet med fördröjningen i en Ripple Carry-adderare används **Carry Look-Ahead**. Istället för att vänta på att carry-signalen ska vandra (rippla) genom varje steg, beräknar man i förväg om en carry kommer att skapas.
+Varje grind i kretsen tar några nanosekunder på sig att reagera. Innan den sista biten adderas (MSB) i en adderare kan visa ett korrekt värde, måste carry-signaler från tidigare additioner ha vandrat genom alla föregående steg. Ju fler bitar vi adderar, desto långsammare blir kretsen. För att lösa problemet med fördröjningen i en Ripple Carry-adderare används **Carry Look-Ahead**. Istället för att vänta på att carry-signalen ska vandra (rippla) genom varje steg, beräknar man i förväg om en carry kommer att skapas.
 
 Tekniken bygger på två logiska begrepp för varje bit-position ($i$):
 
@@ -95,9 +93,6 @@ Tekniken bygger på två logiska begrepp för varje bit-position ($i$):
 2.  **Propagate ($P_i$):** En inkommande carry kommer att skickas vidare (propageras) till nästa steg om antingen $A_i$ eller $B_i$ är 1.
     $$P_i = A_i + B_i$$ (eller ofta $A_i \oplus B_i$ för att spara logik)
 
-
-
-#### Hur det fungerar i praktiken
 Genom att använda dessa två funktioner kan vi skriva uttrycket för carry ut ($C_{out}$) från vilken bit som helst utan att behöva veta vad föregående steg har kommit fram till än. 
 
 För den första biten ($C_1$) ser det ut som vanligt:
@@ -106,23 +101,84 @@ $$C_1 = G_0 + (P_0 \cdot C_{in})$$
 Men för den andra biten ($C_2$) kan vi sätta in formeln för $C_1$ direkt:
 $$C_2 = G_1 + P_1(G_0 + P_0 \cdot C_{in}) = G_1 + P_1 G_0 + P_1 P_0 C_{in}$$
 
-
-
 **Slutsats:** Som vi ser i formeln för $C_2$ beror resultatet nu bara på de ursprungliga ingångarna ($A, B$ och $C_{in}$) och inte på den faktiska beräkningen i steget innan. Alla carry-signaler kan alltså beräknas **samtidigt** i en separat logikkrets (Carry Look-ahead Unit). Detta gör adderaren extremt mycket snabbare, men på bekostnad av att kretsen blir betydligt mer komplex och kräver fler grindar.
 
----
+### Subtraktion: Adderaren som gör allt
 
-## 5.2 Datadirigering: Multiplexern (MUX)
+I digitalteknik bygger vi sällan specifika kretsar för subtraktion. Istället utnyttjar vi matematiken bakom **tvåkomplement**. För att beräkna $A - B$ gör vi istället om det till en addition: $A + (-B)$.
 
-Efter att ha tittat på hur vi räknar med data, ska vi nu se hur vi väljer vilken data som ska skickas var. Den viktigaste komponenten för detta är **Multiplexern**, ofta förkortad **MUX**.
+För att skapa $-B$ (tvåkomplementet av $B$) behöver vi göra två saker:
+1. Invertera alla bitar i $B$ (NOT).
+2. Addera 1 till resultatet.
 
-En multiplexer fungerar som en digital strömbrytare eller en växeltavla. Den har flera dataingångar men bara **en** utgång. Vilken av ingångarna som kopplas till utgången bestäms av en eller flera **styrsignaler** (Select-lines).
+#### Implementering med en Adderare/Subtraherare
+Genom att lägga till en styrsignal, låt oss kalla den $Sub$, kan vi styra om kretsen ska addera eller subtrahera:
 
+* **XOR som kontrollerbar inverterare:** Varje bit i talet $B$ körs genom en XOR-grind tillsammans med $Sub$-signalen. 
+    - Om $Sub = 0$: Bitarna passerar oförändrade ($B \oplus 0 = B$).
+    - Om $Sub = 1$: Bitarna inverteras ($B \oplus 1 = \bar{B}$).
+* **Carry-in tricket:** Genom att koppla $Sub$-signalen direkt till adderarens första **Carry-in** ($C_{in}$), får vi den där "extra ettan" som krävs för tvåkomplementet helt gratis när $Sub=1$.
 
+Detta är extremt effektivt. Med bara några extra XOR-grindar har vi skapat en enhet som kan hantera både addition och subtraktion, vilket sparar både plats och ström i processorn.
 
-### 5.2.1 2-till-1 Multiplexer
+## Datadirigering: Multiplexern (MUX)
+Efter att ha tittat på hur vi räknar med data, ska vi nu se hur vi väljer vilken data som ska skickas var. Den viktigaste komponenten för detta är **Multiplexern**, ofta förkortad **MUX**. En multiplexer fungerar som en digital strömbrytare eller en växeltavla. Den har flera dataingångar men bara **en** utgång. Vilken av ingångarna som kopplas till utgången bestäms av en eller flera **styrsignaler** (Select-lines).
+
+### 2-till-1 multiplexer
 Den enklaste multiplexern har två dataingångar ($D_0, D_1$) och en styrsignal ($S$).
 * Om $S = 0$, kopplas $D_0$ till utgången.
 * Om $S = 1$, kopplas $D_1$ till utgången.
 
 Detta är en fundamental byggsten som används överallt i datorarkitektur för att styra dataflöden mellan olika register och enheter.
+
+### 5.2.2 Logisk uppbyggnad och boolesk funktion för 2-till-1 Multiplexer
+Hur ser en multiplexer ut på insidan? För en 2-till-1 MUX kan vi beskriva funktionen med ett logiskt uttryck. Om $Y$ är utgången, $S$ är styrsignalen och $D_0, D_1$ är dataingångarna, blir uttrycket:
+
+$$Y = (D_0 \cdot \bar{S}) + (D_1 \cdot S)$$
+
+Detta innebär att om $S=0$, blir den högra termen noll och $Y$ styrs helt av $D_0$. Om $S=1$, blir den vänstra termen noll och $Y$ styrs av $D_1$. Se även @tbl-2-to-1-multiplexer.
+
+Table: Sanningstabell för en 2-till-1 multiplexer. {#tbl-2-to-1-multiplexer}
+
+| $S$ (Styr) | $D_1$ | $D_0$ | **$Y$ (Ut)** | Beskrivning |
+|:---:|:---:|:---:|:---:|:---|
+| 0 | 0 | **0** | **0** | $S=0$, utgången följer $D_0$ |
+| 0 | 0 | **1** | **1** | $S=0$, utgången följer $D_0$ |
+| 0 | 1 | **0** | **0** | $S=0$, utgången följer $D_0$ |
+| 0 | 1 | **1** | **1** | $S=0$, utgången följer $D_0$ |
+| 1 | **0** | 0 | **0** | $S=1$, utgången följer $D_1$ |
+| 1 | **0** | 1 | **0** | $S=1$, utgången följer $D_1$ |
+| 1 | **1** | 0 | **1** | $S=1$, utgången följer $D_1$ |
+| 1 | **1** | 1 | **1** | $S=1$, utgången följer $D_1$ |
+
+Styrsignalen kommer alltså bestämma om $D0$ eller $D1$ når utgången. Det implementeras enkelt med det booleska uttrycket 
+
+$Y = (\overline{S} \cdot D_0) + (S \cdot D_)$.
+
+### Större multiplexrar (n-till-1)
+När vi vill välja mellan fler än två ingångar behöver vi fler styrsignaler. Antalet ingångar ($n$) bestämmer hur många styrbitar ($s$) som krävs enligt formeln $n = 2^s$.
+
+Som exempel kan vi studera en **4-till-1 multiplexer**. Den har fyra ingångar $D_0 - D_3$ och kräver alltså 2 styrbitar ($S_1, S_0$).
+
+Table: Förenklad sanningstabell för en 4-till-1 multiplexer. {#tbl-4-to-1-multiplexer}
+
+| $S_1$ | $S_0$ | Utgång (Y) |
+|:---:|:---:|:---:|
+| 0 | 0 | $D_0$ |
+| 0 | 1 | $D_1$ |
+| 1 | 0 | $D_2$ |
+| 1 | 1 | $D_3$ |
+
+Implementeringen med grindlogik görs på motsvarande sätt som för 2-till-1 multiplexern. 
+
+$$Y = (\bar{S_1} \cdot \bar{S_0} \cdot D_0) + (\bar{S_1} \cdot S_0 \cdot D_1) + (S_1 \cdot \bar{S_0} \cdot D_2) + (S_1 \cdot S_0 \cdot D_3)$$
+
+Varje term i parentes representerar en unik kombination av styrsignalerna:
+
+* **Term 1:** Om $S_1=0$ och $S_0=0$, aktiveras den första AND-grinden och släpper igenom $D_0$.
+* **Term 2:** Om $S_1=0$ och $S_0=1$, aktiveras den andra AND-grinden och släpper igenom $D_1$.
+* **Term 3:** Om $S_1=1$ and $S_0=0$, aktiveras den tredje AND-grinden och släpper igenom $D_2$.
+* **Term 4:** Om $S_1=1$ och $S_0=1$, aktiveras den fjärde AND-grinden och släpper igenom $D_3$.
+
+### Praktisk tillämpning: Databusstyrning
+I en enkel processor används multiplexrar för att bestämma vilket värde som ska skickas till räkneenheten (ALU:n). Ska det vara ett värde från ett register, eller ska det vara ett tal som kommer direkt från programkoden? En MUX fattar beslutet baserat på instruktionen som processorn just nu läser.
