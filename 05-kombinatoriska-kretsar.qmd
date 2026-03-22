@@ -4,7 +4,7 @@ I de tidigare kapitlen har vi bekantat oss med de minsta beståndsdelarna i digi
 
 ## Vad är en kombinatorisk krets?
 
-En kombinatorisk krets kännetecknas av att dess utgångar ($Y$) vid varje givet tillfälle **enbart** beror på de nuvarande värdena på ingångarna ($A, B, C \dots$). Man kan likna det vid en matematisk funktion $y = f(x)$; så fort du ändrar $x$, ändras $y$ omedelbart (bortsett från en försumbar fördröjning i hårdvaran).
+En kombinatorisk krets kännetecknas av att dess utgångar ($Y$) vid varje givet tillfälle **enbart** beror på de nuvarande värdena på ingångarna ($A, B, C \dots$). Man kan likna det vid en matematisk funktion $y = f(x)$; så fort du ändrar $x$, ändras $y$ omedelbart (bortsett från viss fördröjning i hårdvaran).
 
 Det innebär att en kombinatorisk krets:
 
@@ -40,13 +40,15 @@ Table: Sanningstabell för **halvadderare**. Halvadderaren har två utgångar, e
 | 1 | 0 |     1     |     0     |
 | 1 | 1 |     0     |     1     |
 
-Som vi ser i @tbl-halvadderare motsvaras Summan $S$ av en **XOR**-funktion och Carry-signalen $C$ av en **AND**-funktion.
+Som vi ser i @tbl-halvadderare motsvaras summan $S$ av en **XOR**-funktion och carry-signalen $C$ av en **AND**-funktion. Detta är realiserat i övre kretsschemat i @fig-half-adder-full-adder.
+
+![Halvadderare överst (half adder) och heladderare underst (full adder), realiserade med logiska grindar.](images/05-kombinatoriska-kretsar/half_adder_full_adder.png){#fig-half-adder-full-adder width=50%}
 
 ### Heladderaren (Full-Adder)
 
 Begränsningen med en halvadderare är att den bara kan hantera två bitar. När vi adderar flersiffriga tal för hand skriver vi ofta en "minnessiffra" ovanför nästa kolumn. I digitaltekniken kallas detta för en **Carry In** ($C_{in}$). Minnessiffran blir då en tredje bit som ska ingå i summeringen. 
 
-En **heladderare** har därför tre ingångar: $A$, $B$ och $C_{in}$. Den levererar precis som tidigare en summa ($S$) och en Carry-out ($C_{out}$).
+En **heladderare** har därför tre ingångar: $A$, $B$ och $C_{in}$. Den levererar precis som tidigare en summa ($S$) och en carry-out ($C_{out}$).
 
 Table: Sanningstabell för **heladderare**. Heladderaren hanterar tre ingångar så att addition med minnessiffra kan genomföras. {#tbl-heladderare}
 
@@ -61,25 +63,52 @@ Table: Sanningstabell för **heladderare**. Heladderaren hanterar tre ingångar 
 |  1  |  0  |    1     |      0      |     1     |
 |  1  |  1  |    1     |      1      |     1     |
 
+En heladderare kan realiseras genom att kombinera två halvadderare och en OR-grind, se undre kretsschemat i @fig-half-adder-full-adder. Den första halvadderaren lägger ihop $A$ och $B$. Den andra halvadderaren lägger sedan ihop resultatet med $C_{in}$. Om någon av halvadderarna genererar en carry, skickas den vidare via OR-grinden som $C_{out}$.
 
-
-#### Realisering av heladderaren
-En heladderare kan realiseras genom att kombinera två halvadderare och en OR-grind. Den första halvadderaren lägger ihop $A$ och $B$. Den andra halvadderaren lägger sedan ihop resultatet med $C_{in}$. Om någon av halvadderarna genererar en carry, skickas den vidare via OR-grinden som $C_{out}$.
-
----
-
-### 5.1.3 Parallelladderare (Ripple Carry Adder)
+### Parallelladderare (Ripple Carry Adder)
 
 För att addera binära tal med fler än en bit, till exempel två 4-bitars tal ($A_{3}A_{2}A_{1}A_{0}$ och $B_{3}B_{2}B_{1}B_{0}$), kopplar man samman flera heladderare i en kedja. 
 
 Denna struktur kallas ofta för en **Ripple Carry Adder** eftersom carry-signalen måste "rippla" (fortplanta sig) genom varje steg, från den minst signifikanta biten (LSB) till den mest signifikanta biten (MSB).
 
 
+::: {.callout-note}
+## Exempel: 3-bitars **Ripple Carry Adder**
 
-#### Begränsningar: Propagation Delay
-Även om Ripple Carry-adderaren är enkel att förstå och bygga, har den en stor nackdel i högfrekventa system: **tidsfördröjning**. 
+En 3-bitars adderare kan skapas med en halvadderare för LSB (position 0, det vill säga $2^0$), följt av två stycken heladderare som hanterar positionernna 1 respektive 2. Heladderare behövs för att kunna hantera eventuella "minnessiffror" i additionen. Det går självklart lika bra att bygga med tre stycken heladderare och sätta första carry-signalen $C0_{in} = 0$.
 
-Varje grind i kretsen tar några nanosekunder på sig att reagera. Innan den sista biten ($S_3$) i en 4-bitars adderare kan visa ett korrekt värde, måste carry-signalen ha vandrat genom alla föregående steg. Ju fler bitar vi adderar, desto långsammare blir kretsen. I moderna processorer använder man därför mer avancerade tekniker (som *Carry Look-Ahead*) för att förutse carry-signalen och öka hastigheten.
+![3-bitars adderare realiserad med en halvadderare följd av två heladderare.](images/05-kombinatoriska-kretsar/3bit-adder.png){#fig-3bit-adder width=90%}
+:::
+
+
+#### Carry Look-Ahead (CLA) – Snabbare addition
+Även om Ripple Carry-adderaren är enkel att förstå och bygga, har den en stor nackdel i system som kräver snabba beräkningar: **tidsfördröjning**. 
+
+Varje grind i kretsen tar några nanosekunder på sig att reagera. Innan den sista biten adderas (MSB) i en adderare kan visa ett korrekt värde, måste carry-signaler från tidigare additioner ha vandrat genom alla föregående steg. Ju fler bitar vi adderar, desto långsammare blir kretsen. I moderna processorer använder man därför mer avancerade tekniker (som *Carry Look-Ahead*) för att förutse carry-signalen och öka hastigheten.
+
+För att lösa problemet med fördröjningen i en Ripple Carry-adderare används **Carry Look-Ahead**. Istället för att vänta på att carry-signalen ska vandra (rippla) genom varje steg, beräknar man i förväg om en carry kommer att skapas.
+
+Tekniken bygger på två logiska begrepp för varje bit-position ($i$):
+
+1.  **Generate ($G_i$):** En carry skapas (genereras) i detta steg om både $A_i$ och $B_i$ är 1.
+    $$G_i = A_i \cdot B_i$$
+2.  **Propagate ($P_i$):** En inkommande carry kommer att skickas vidare (propageras) till nästa steg om antingen $A_i$ eller $B_i$ är 1.
+    $$P_i = A_i + B_i$$ (eller ofta $A_i \oplus B_i$ för att spara logik)
+
+
+
+#### Hur det fungerar i praktiken
+Genom att använda dessa två funktioner kan vi skriva uttrycket för carry ut ($C_{out}$) från vilken bit som helst utan att behöva veta vad föregående steg har kommit fram till än. 
+
+För den första biten ($C_1$) ser det ut som vanligt:
+$$C_1 = G_0 + (P_0 \cdot C_{in})$$
+
+Men för den andra biten ($C_2$) kan vi sätta in formeln för $C_1$ direkt:
+$$C_2 = G_1 + P_1(G_0 + P_0 \cdot C_{in}) = G_1 + P_1 G_0 + P_1 P_0 C_{in}$$
+
+
+
+**Slutsats:** Som vi ser i formeln för $C_2$ beror resultatet nu bara på de ursprungliga ingångarna ($A, B$ och $C_{in}$) och inte på den faktiska beräkningen i steget innan. Alla carry-signaler kan alltså beräknas **samtidigt** i en separat logikkrets (Carry Look-ahead Unit). Detta gör adderaren extremt mycket snabbare, men på bekostnad av att kretsen blir betydligt mer komplex och kräver fler grindar.
 
 ---
 
