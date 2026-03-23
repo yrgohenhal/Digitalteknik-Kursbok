@@ -1,5 +1,6 @@
 # Talsystem och aritmetik för binära tal 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Positionssystemet
 I ett positionssystem beror en siffras värde på dess position i talet. För ett tal $N$ med basen $b$ kan vi uttrycka värdet som en summa av siffror multiplicerade med basens potenser:
 
@@ -71,6 +72,7 @@ Det binära systemet har en inneboende begränsning när det gäller att represe
 
 För att hantera detta används i datorer en standard som kallas **flyttal**. Istället för en fast punkt lagrar datorn talet som en **signifikand** (själva talvärdet) och en **exponent** (som anger var punkten ska placeras). Detta gör att vi kan representera både extremt stora och extremt små tal, men med en kompromiss: vi får en begränsad **precision**. När talet inte går att uttrycka exakt med de tillgängliga bitarna sker en avrundning, vilket är viktigt att känna till vid känsliga beräkningar.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Decimala, binära och hexadecimala systemet
 
 I digitaltekniken arbetar vi främst med tre talsystem som var och en tjänar ett specifikt syfte:
@@ -181,6 +183,7 @@ I det binära talet **$1101_2$** ser vi tydligt hur vikten fördelas:
 
 Att förstå vilken bit som är MSB och vilken som är LSB är fundamentalt för hur processorer hanterar data. Det är avgörande för det som kallas **Endian** (i vilken ordning bytes lagras i minnet eller ordningen bitar skickas i seriell kommunikation) och när vi utför logiska skiftoperationer, där vi antingen "skiftar ut" MSB eller LSB för att manipulera talets storlek eller tecken.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Konverteringar mellan talsystem
 
 Att kunna konvertera mellan talsystem är en fundamental färdighet för att förstå hur data flyttas och tolkas i en dator.
@@ -262,16 +265,16 @@ Addition utförs kolumnvis från höger till vänster. En "minnessiffra" (carry)
 För att tydliggöra *carry* (minnessiffror) ställer vi upp talen i kolumner:
 
 $$
-\begin{array}{r@{\quad}l}
-  \text{Carry: } & \color{red}{0110} \\
-  & 0111_2 \quad (7_{10}) \\
-+ & 0101_2 \quad (5_{10}) \\
+\begin{array}{r@{\quad}c@{\,}c@{\,}c@{\,}c@{\quad}l}
+  \text{Carry:} & \color{red}{\phantom{1}} & \color{red}{1} & \color{red}{1} & \color{red}{\phantom{1}} & \\[-0.5ex]
+  & 0 & 1 & 1 & 1_2 & (7_{10}) \\
++ & 0 & 1 & 0 & 1_2 & (5_{10}) \\
 \hline
-  & 1100_2 \quad (12_{10})
+  & 1 & 1 & 0 & 0_2 & (12_{10})
 \end{array}
 $$
 
-$\Rightarrow$ **Förklaring:** I varje kolumn där summan överstiger $1$, skickas en $1$ (carry) till nästa kolumn till vänster.
+**Förklaring:** I varje kolumn där summan överstiger $1$, skickas en $\color{red}{1}$ (carry) till nästa kolumn till vänster.
 :::
 
 
@@ -279,25 +282,30 @@ Subtraktion hanteras enklast genom att låna från nästa högre position (borro
 
 
 ::: {.callout-note}
-## Exempel: Binär subtraktion ($6_{10} - 1_{10}$)
+## Exempel: Binär subtraktion med lån ($6_{10} - 1_{10}$)
+
+När vi lånar i det binära talsystemet lånar vi alltid värdet $2_{10}$, vilket binärt skrivs som $10_2$.
 
 $$
-\begin{array}{r@{\quad}l}
-  \text{Lån: } & \phantom{0}\color{red}{0010} \\
-  & 0110_2 \quad (6_{10}) \\
-- & 0001_2 \quad (1_{10}) \\
+\begin{array}{r@{\quad}c@{\,}c@{\,}c@{\,}c@{\quad}l}
+  \text{Lån:} & & & & \color{red}{\scriptstyle 10} & \\[-0.8ex]
+  & 0 & 1 & \cancel{1} & 0_2 & (6_{10}) \\
+- & 0 & 0 & 0 & 1_2 & (1_{10}) \\
 \hline
-  & 0101_2 \quad (5_{10})
+  & 0 & 1 & 0 & 1_2 & (5_{10})
 \end{array}
 $$
 
-$\Rightarrow$ **Förklaring:** För att räkna $0-1$ i position $2^0$ lånar vi från position $2^1$. Den positionen blir då 0, och vi får värdet 2 ($10_2$) till position $2^0$. Nu räknar vi $(2+0)-1 = 1$.
+**Förklaring:**
+
+1. I kolumnen längst till höger kan vi inte ta $0-1$. 
+2. Vi lånar från nästa kolumn, stryker dess etta ($\cancel{1}$) och flyttar lånet ett steg till höger. Lånet landar som en röd $\color{red}{10}$ ovanför nollan längst till höger. 
 :::
 
 
 ### Multiplikation och division
 
-Att multiplicera eller dividera med potenser av $2^n$ är extremt effektivt genom att använda bit-skiftningar.
+Att multiplicera eller dividera med heltal som är potenser av $2^n$ är extremt effektivt genom att använda bit-skiftningar.
 
 
 ::: {.callout-note}
@@ -355,7 +363,7 @@ $$
   \text{Tal:} & 00101100_2 \quad (44_{10}) \\
   \text{Skift 3 steg:} & \leftarrow 3 \\
   \hline
-  \text{Resultat:} & \textcolor{red}{1}\textcolor{black}{01100000}_2 \quad (tolkas som 96_{10} och inte 352_{10})
+  \text{Resultat:} & \textcolor{red}{1}\textcolor{black}{01100000}_2 \quad (\text{tolkas som } 96_{10} \text{ och inte } 352_{10})
 \end{array}
 $$
 
@@ -365,6 +373,7 @@ Här ger multiplikationen alltså ett fel när MSB går förlorad i overflow.
 
 Metodiken som beskrivits ovan för addition, subtraktion, multiplikation och division fungerar även decimaltal, men begränsningen vid multiplikation och division är att multiplikator respektive divisor är ett heltal baserat på faktor 2. Vid allmän multiplikation/division med godtyckliga tal krävs mer komplexa algoritmer där man iterativt även utför addition eller subtraktion. Division är den mest resurskrävande operationen och tar betydligt fler klockcykler i en processor än en enkel addition.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Hantering av negativa tal
 
 För att representera negativa tal i datorer används olika metoder för att möjliggöra effektiv aritmetik. Här går vi igenom de vanligaste sätten. Vi inleder med unsigned, som inte kan hantera negativa tal men är en start för att visa olika sätt att hantera negativa tal inom digitaltekniken. Här begränsas exemplen till 8-bitars tal, men de gäller generellt.
@@ -521,6 +530,7 @@ $$
 
 Anledningen till att 2-komplement är standard i moderna processorer är alltså att subtraktion kan utföras som vanlig addition. För att räkna $A - B$, beräknar processorn $A + (\text{2-komplement av } B)$. Kretslösningen för aritmetiska beräkningar blir då ganska enkel. 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Koder och representationer
 
 För att digitala system ska kunna kommunicera med omvärlden, lagra text eller styra fysiska processer räcker det inte med binära tal. Vi använder olika koder för att mappa binära mönster till specifik information.
@@ -606,5 +616,3 @@ Skicka dataordet $1011_2$ med **jämn paritet**.
 3. Resultat: Den sända sekvensen blir `10111`.
 4. Om mottagaren vid kontroll räknar ettorna och får ett udda antal (t.ex. $10101$ = 3 ettor), vet systemet direkt att ett fel inträffat.
 :::
-
-

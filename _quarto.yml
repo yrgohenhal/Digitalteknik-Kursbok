@@ -36,6 +36,7 @@ format:
         \usepackage[siunitx]{circuitikz}
         \usepackage{titlesec}
         \usepackage{caption}
+        \usepackage{cancel}
 
         % Konfiguration för både tabeller och figurer
         \captionsetup{

@@ -4,6 +4,7 @@ I föregående kapitel visades bl.a. hur information representeras binärt via t
 
 En logisk grind är den komponent som utför en logisk operation på en eller flera insignaler och producerar en utsignal baserat på dessa.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Från strömbrytare till logik
 
 För att förstå logiska grindar kan man likna dem vid strömbrytare i en elektrisk krets. Tänk dig en enkel seriekoppling enligt den vänstra delen av @fig-switch-lampa. För att lampan ska lysa måste både strömbrytare A och strömbrytare B vara stängda. Om vi definierar 'stängd brytare' som 1 och 'öppen brytare' som 0, ser vi att utsignalen blir 1 endast om båda insignalerna är 1. I den parallellkopplade kretsen till höger i @fig-switch-lampa räcker det däremot att minst en av strömbrytarna är stängd för att lampan ska lysa. Utsignalen blir här 1 så länge minst en av insignalerna är 1. Dessa två enkla kretsar illustrerar grundprinciperna för de logiska funktionerna AND (svenska: OCH) och OR (svenska: ELLER).
@@ -16,12 +17,14 @@ Detta exempel med switchar och lampa visar fundamenten i digital systemdesign:
 * **Logisk funktion:** Den "regel" grinden följer (t.ex. "om A och B är sanna...").
 * **Utgång:** Resultatet av operationen.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Grinden som abstraktion
 
 När vi ritar digitala system använder vi oss av en **abstraktion**. Vi behöver inte bekymra oss om exakt hur transistorerna inuti en krets fungerar för att kunna designa en maskin – vi fokuserar på den logiska funktionen.
 
 En grind är alltså en "svart låda" med förutsägbara egenskaper. Genom att kombinera dessa enkla grindar kan vi skapa allt från enkla räknare till extremt komplexa processorer. I kommande avsnitt ska vi lära oss hur vi systematiskt beskriver vad som händer inuti dessa "svarta lådor" med hjälp av sanningstabeller.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Sanningstabeller: Ett systematiskt analysverktyg
 
 För att slippa rita kretsscheman varje gång vi vill förstå en funktion använder vi **sanningstabeller**. En sanningstabell är en matematisk tabell som listar alla tänkbara kombinationer av insignaler (A och B) och visar vad den resulterande utsignalen (Q) blir för varje scenario.
@@ -87,6 +90,7 @@ Denna tabell tydliggör systemets säkerhetsfilosofi: föraråtgärden prioriter
 :::
 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Logiska grindar: Symboler och funktion
 
 Inom digitaltekniken används två huvudstandarder för att rita grindar: **IEC** (den rektangulära formen) och **ANSI/IEEE** (den karaktäristiska "bågformen"). Oberoende av vilken standard som används är den logiska funktionen alltid densamma.

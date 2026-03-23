@@ -1,14 +1,16 @@
-
+<!-- ---------------------------------------------------------------------------------------------------- -->
+<!-- Definition av färger som används i ekvationer kopplade till Karnaughdiagrammens färger               -->
 \definecolor{highlight_249_115_022}{rgb}{0.976, 0.451, 0.086}
 \definecolor{highlight_124_058_237}{rgb}{0.486, 0.227, 0.929}
 \definecolor{highlight_016_185_129}{rgb}{0.063, 0.725, 0.506}
 \definecolor{highlight_239_068_068}{rgb}{0.937, 0.267, 0.267}
 \definecolor{highlight_059_130_246}{rgb}{0.231, 0.510, 0.965}
 \definecolor{highlight_245_158_011}{rgb}{0.961, 0.620, 0.043}
-
+<!-- ---------------------------------------------------------------------------------------------------- -->
 
 # Boolesk algebra – Logikens matematik
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Varför räkna på logik?
 
 När vi arbetar med digitalteknik är det lätt att tro att det räcker med "sunt förnuft". Om en lampa ska lysa när två knappar trycks in, drar vi slutsatsen att vi behöver en AND-grind. Men i verkliga system, där dussintals sensorer och signaler samverkar, räcker intuitionen inte till. Här kommer **Boolesk algebra** in i bilden. Det är ett matematiskt system, utvecklat av George Boole på 1800-talet, som låter oss beskriva logiska samband med variabler och operatorer istället för bara ord eller krångliga scheman.
@@ -22,6 +24,7 @@ Du kanske frågar dig: *"Varför måste jag lära mig formler när jag kan tänk
 
 Genom att använda de Booleska lagarna kan vi ta ett komplext uttryck – som vid första anblick ser ut att kräva fem olika kretsar – och bevisa att det i själva verket kan ersättas av en enda ledare eller en enkel grind. Algebran ger oss ett universellt språk att dokumentera våra lösningar med, så att kollegor kan följa vårt resonemang svart på vitt.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Den logiska syntaxen
 
 För att kunna räkna med logik behöver vi ett gemensamt språk. Inom digitaltekniken använder vi standardiserad notation för att beskriva grindar och deras funktioner i formler. När vi skriver Booleska uttryck använder vi tre huvudoperationer, NOT, AND och OR. Notera att det finns flera olika sätt att skriva samma sak beroende på vilken litteratur man läser:
@@ -155,6 +158,7 @@ I praktiken kommer du oftast att använda mintermer för att ställa upp din fö
 :::
 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Grundläggande Booleska lagar
 
 När vi har översatt ett logiskt problem till ett matematiskt uttryck får vi ofta en lösning som är komplex och kräver onödigt många grindar. För att bygga en effektiv krets använder vi Boolesk algebra för att förenkla uttrycket. Här är de grundläggande verktygen vi använder för att manipulera våra uttryck.
@@ -178,6 +182,8 @@ Table: Algebraiska Booleska lagar. {#tbl-booleska_algebraiska_lagar}
 | **Kommutativ** | $A \cdot B = B \cdot A$ | $A + B = B + A$ |
 | **Associativ** | $A \cdot (B \cdot C) = (A \cdot B) \cdot C$ | $A + (B + C) = (A + B) + C$ |
 | **Distributiv** | $A \cdot (B + C) = A \cdot B + A \cdot C$ | $A + (B \cdot C) = (A + B) \cdot (A + C)$ |
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## De Morgans lagar
 
 De Morgans lagar är det absolut viktigaste verktyget för att hantera inverterade uttryck när bearbetning av logiska uttryck sker. Gäller särskilt när vi arbetar med NAND- och NOR-logik. De beskriver hur en "NOT"-operation påverkar en AND- respektive OR-grind.
@@ -205,6 +211,7 @@ $\overline{A + \overline{B}} = \overline{A} \cdot \overline{\overline{B}} = \ove
 :::
 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Konsensuslagarna
 
 Konsensuslagarna är användbara då man har "överlappande" uttryck och har en redundant term i sitt Booleska uttryck. De kan vara svåra att identifiera i uttryck eftersom de finns i uttryck som ser ut att vara färdigförenklade. De finns i två former:
@@ -214,6 +221,7 @@ Konsensuslagarna är användbara då man har "överlappande" uttryck och har en 
 
 Lyckligtvis så kommer en metod presenteras i @sec-Karnaugh-diagram där dessa lagar hanteras per automatik. Då kommer vi introducera Karnaughdiagram, som är en grafisk lösningsmetod för att förenkla logiska uttryck från sanningstabell.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Algebraisk förenkling – en steg-för-steg-metod
 
 Nu när vi har verktygen (de algebraiska lagarna och De Morgan) är det dags att använda dem för att faktiskt bygga billigare och snabbare kretsar. Ett komplext uttryck kräver många grindar, vilket innebär mer värmeutveckling, högre kostnad och längre signalfördröjning.
@@ -361,6 +369,7 @@ Var försiktig så att du inte förenklar bort logik som behövs för säkerhet 
 :::
 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Karnaughdiagram: Logik i två dimensioner {#sec-Karnaugh-diagram}
 
 Hittills har vi förenklat uttryck med hjälp av Boolesk algebra. Det är en elegant metod, men den kräver en hel del "pusselbitar" och risken att missa en förenkling är stor. Här kliver **Karnaughdiagrammet** (ofta förkortat K-diagram) in som en räddare i nöden.
@@ -594,6 +603,7 @@ Valet mellan SOP och POS styrs oftast av antalet inringningar som krävs i ett K
 :::
 
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Från logiska uttryck till grindar: NAND och NOR
 
 I praktiken bygger vi sällan kretsar med en blandning av AND- och OR-grindar. Istället använder vi nästan uteslutande **NAND-logik** eller **NOR-logik**. Varför? För att dessa grindar är "universella" och ofta är både billigare och snabbare att tillverka i kisel i integrerade kretsar. Det är användbart för man kan nämligen skapa alla logiska kretsar med uteslutande NAND, alternativt uteslutande NOR.
