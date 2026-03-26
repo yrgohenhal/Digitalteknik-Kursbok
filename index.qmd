@@ -14,7 +14,7 @@ Bildmaterial är skapat av författaren, alternativt kommer från Wikipedia. I d
 
 Kretsscheman är skapade i Kicad 9.0.
 
-Karnaughdiagram är skapade med onlineverktyget Karnaugh Map (K-Map) Solver, https://karnaughmapsolver.com/.
+Karnaughdiagram är skapade med onlineverktyget [Karnaugh Map (K-Map) Solver](https://karnaughmapsolver.com/).
 
 Titelbladet visar ett fotografi på Intel 8008.
 Källa: Av Konstantin Lanzet - CPU Collection Konstantin LanzetCamera: Canon EOS 400D, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=5694177
