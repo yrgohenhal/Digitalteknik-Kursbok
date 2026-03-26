@@ -4,7 +4,7 @@ project:
 book:
   title: "Digitalteknik"
   author: "Henrik Hallenberg"
-  date: "2026-03-22"
+  date: "2026-03-26"
   chapters:
     - index.qmd
     - 01-introduktion.qmd
@@ -26,6 +26,9 @@ format:
     pdf-engine: lualatex
     toc: true
     toc-title: "Innehållsförteckning"
+    colorlinks: true
+    linkcolor: blue
+    urlcolor: blue
     include-before-body: cover.tex
     fig-align: left
     include-in-header:
@@ -60,7 +63,7 @@ format:
 
         \fancypagestyle{framsida}{
           \fancyhf{}
-          \fancyfoot[L]{Rev: 0.4}
+          \fancyfoot[L]{Rev: 0.41}
           \fancyfoot[C]{\thepage}
           \fancyfoot[R]{Henrik Hallenberg}
           \renewcommand{\footrulewidth}{0.4pt}
