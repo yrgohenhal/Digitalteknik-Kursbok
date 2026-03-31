@@ -12,6 +12,7 @@ book:
     - 03-logiska-grindar.qmd
     - 04-boolesk-algebra.qmd
     - 05-kombinatoriska-kretsar.qmd
+    - 06-sekventiella-kretsar.qmd
     - a1-referenser.qmd
     - a2-appendix.qmd
 

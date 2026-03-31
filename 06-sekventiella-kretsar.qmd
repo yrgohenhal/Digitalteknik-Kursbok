@@ -1,0 +1,97 @@
+# Sekventiella kretsar – Logik med minne
+
+Hittills har vi bara arbetat med **logiska grindar** och hur dessa kan byggas samman till **kombinatoriska kretsar**. I dessa bestäms utgångens värde *enbart* av de nuvarande insignalerna. Så fort du ändrar en ingång, ändras utgången (efter en kort grindfördröjning). Det finns ingen historia och inget minne.
+
+**Sekventiella kretsar** fungerar annorlunda. Det är kretsar som har någon form av minne. Det betyder att utgångens värde är en konsekvens av både insignaler och kretsens tidigare historik. Man kan se det som att tidigare utsignal faktiskt fungerar som en insignal. Det är faktiskt precis så som man löser minnesfunktionaliteten i sekventiella kretsar. Genom att återkoppla en utgång till en ingång skapar vi kretsar som "minns" vad som hände nyss. Detta är grunden för digitalt lagringsutrymme, från enkla register till RAM-minnen.
+
+* **Kombinatorik:** $Y = f(\text{Ingångar})$
+* **Sekventiell logik:** $Y = f(\text{Ingångar, Tidigare tillstånd})$
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+## Latchar (Nivåstyrda minneselement)
+
+En **latch** är den enklaste formen av minne. Den kallas ofta för "genomskinlig" (transparent) eftersom den ändrar sitt tillstånd så fort ingångarna ändras, förutsatt att den är aktiverad.
+
+### SR-latchen (Set-Reset)
+Den mest grundläggande latchen är SR-latchen. Den har två ingångar:
+
+1.  **S (Set):** Sätter utgången $Q$ till 1.
+2.  **R (Reset):** Nollställer utgången $Q$ till 0.
+
+Den har också oftast två utgångar: $Q$ och dess invers $\overline{Q}$. Värt att notera, latch kallas *nivåstyrd vippa* med ett svenskt uttryck. Men det finns stor risk för sammanblandning med det som heter vippa som har en likartad men ändå lite annorlunda funktion. Detta kommer vi se senare i @vippor. För att undvika sammanblandning används här det engelska begreppet latch och inte det svenska nivåstyrd vippa.
+
+![SR-latch uppbyggd av två NOR-grindar. $S$ (set) sätter latchens utgång $Q$, medan $R$ (reset) nollställer den. Utgången $\overline{Q}$ är helt enkelt inversen av $Q$.](images/06-sekventiella-kretsar/SR_latch_with_NOR.png){#fig-SR-latch-with-NOR width=50%}
+
+Kretsschemat i @fig-SR-latch-with-NOR visar hur man korsvis återkopplar NOR-grindarnas utgångarna till ingångarna. På så sätt skapas grunden för minnesfunktionen, och digitalteknikens enklaste latch (SR-latchen) är född. Sanningstabellen för denna krets visas i @tbl-SR-latch-NOR.
+
+Table: Sanningstabell för NOR-baserad SR-latch. {#tbl-SR-latch-NOR}
+
+| S | R | $Q$ | $\overline{Q}$ | Kommentar |
+|:-:|:-:|:---:|:---:|:---|
+| 0 | 0 | $Q_0$ | $\overline{Q_0}$ | **Minne:** Ingen ändring sker. |
+| 0 | 1 | 0 | 1 | **Reset:** Utgången nollställs. |
+| 1 | 0 | 1 | 0 | **Set:** Utgången sätts till ett. |
+| 1 | 1 | 0* | 0* | **Förbjudet:** Båda utgångarna blir noll. |
+
+Som @tbl-SR-latch-NOR indikerar är tillståndet $S=1, R=1$ problematiskt. Om båda ingångarna går höga ($1$) så kommer båda utgångarna bli låga ($0$). Det blir motsägelsefullt eftersom utgången $\overline{Q}$ är definierad som inversen av $Q$. Men det stora problemet uppkommer om båda ingångarna sedan slår om till låg signal samtidigt för att gå till minnestillståndet, efter att ha varit höga. Då kan kretsen hamna i ett läge där den "tävlar" om vilket värde den ska ha på utgångarna.
+
+1.  Start: Båda utgångarna är $0$.
+2.  Förändring: Vi tar bort båda ettorna på ingångarna samtidigt och sätter dessa till nollor.
+3.  Kapplöpningen (race condition): Båda NOR-grindarna ser nu nollor på båda sina ingångar och "tävlar" om att bli först med att skicka ut en etta.
+4.  Resultatet: Den grind som är bråkdelen av en nanosekund snabbare vinner.
+
+Men om de är "exakt" lika snabba? Då hamnar vi under en tid i det som kallas i **metastabilitet**. Kretsen står och väger och har spänningsnivåer som ligger någonstans mellan låg respektive hög spänning.
+
+SR-latchen kan även byggas med två NAND-grindar, se @fig-SR-latch-with-NAND och @tbl-SR-latch-NAND. Den stora skillnaden blir att latchen nu styrs med signaler som är aktivt låga istället. Det betecknas med $\overline{S}$ och $\overline{R}.$
+
+![SR-latch uppbyggd av två NAND-grindar. Notera att Set och Reset är aktivt låga.](images/06-sekventiella-kretsar/SR_latch_with_NAND.png){#fig-SR-latch-with-NAND width=50%}
+
+Table: Sanningstabell för NAND-baserad SR-latch. {#tbl-SR-latch-NAND}
+
+| $\bar{S}$ | $\bar{R}$ | $Q$ | $\overline{Q}$ | Kommentar |
+|:---:|:---:|:---:|:---:|:---|
+| 1 | 1 | $Q_0$ | $\overline{Q_0}$ | **Minne:** Ingen ändring sker. |
+| 0 | 1 | 1 | 0 | **Set:** Utgången sätts till 1. |
+| 1 | 0 | 0 | 1 | **Reset:** Utgången nollställs. |
+| 0 | 0 | 1* | 1* | **Förbjudet:** Båda utgångarna tvingas höga. |
+
+
+### D-latchen (Data latch)
+Som vi sett så har SR-vippan en del egenskaper som kan ge problem. Dels har den förbjudet tillstånd och som en föjd av detta finns det risk för kapplöpning och metastabilitet. Dessutom så kommer utgången $Q$ hela tiden följa det som händer med Set $S$ och Reset $R$. Om SR-vippan ligger i sin minnesfas med $S = 1$, så kan en kort, oönskad störning och spänningsförändring på $R$ göra så att SR-vippan nollställs.
+
+Det senare problemet kan hanteras genom att lägga till en **Enable**. Detta kan implementeras genom att lägga till två NAND-grindar till den enkla SR-latchen implementerad med NAND, se @fig-SR-latch-with-Enable De extra NAND-grindarna kan öppna och stänga SR-latchens funktion.  
+
+![SR-latch med Enable ($EN$) uppbyggd av två NAND-grindar.](images/06-sekventiella-kretsar/SR_latch_with_Enable.png){#fig-SR-latch-with-Enable width=50%}
+
+Fast det löser inte problemet med det förbjudna tillståndet! Men med ytterligare en modifiering av SR-latchen (en inverterare läggs till) så fås det som heter D-latch (D står för Data). Ingången $D$ ersätter $S$ och $R$  enligt @fig-D-latch. Enable $EN$ kallas ofta för $C$ för en D-latch, där $C$ står för Control eller Clock. För att undvika det förbjudna tillståndet i SR-latchen och kontrollera *när* data ska sparas använder vi en **D-latch**. Den har en dataingång ($D$) och en aktiveringssignal $C$.
+
+![D-latch.](images/06-sekventiella-kretsar/D_latch.png){#fig-D-latch width=50%}
+
+Inverteraren gör att problemet med det förbjudna tillståndet elimineras. Ingångarna till latchen kan inte längre ha samma värde, eftersom de är inversen av varandra. Sanningstabellen blir också enklare, se @tbl-D-latch.
+
+Table: Sanningstabell för D-latch. {#tbl-D-latch}
+
+| C | D | $Q_{n+1}$ | Kommentar |
+|:-:|:-:|:---:|:---|
+| 0 | X | $Q_0$ | Låst (Behåller tidigare värde) |
+| 1 | 0 | 0 | Genomskinlig (Reset) |
+| 1 | 1 | 1 | Genomskinlig (Set) |
+
+### Varför räcker inte latchar?
+
+D-latchen är fortfarande en transparent latch. När $C = 1$ är latchen öppen och $Q = D$, det vill säga data "slinker igenom" latchen. Så om $D$ ändras under den tid som $C$ är hög kommer även $Q$ att ändras. Det kan vara en oönskad egenskap i vissa system, där man önskar arbeta synkront med många latchar på ett sådant sätt att utgångsvärdena sätts vid en distinkt tidpunkt. I komplexa processorer och synkrona system vill vi att alla delar ska uppdateras exakt samtidigt, som på ett givet kommando, och inte tillåts variera då kontrollsignalen är aktiv. Man önskar en digital krets som reagerar på en **klockflank**. Det är här klocksignalen och **Flip-flops** (vippor) kommer in i bilden. De reagerar bara och låser data på en snabb förändring istället och kräver inte en stabil nivå under en längre tid.
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+
+## Vippor (Flip-Flops)
+Skrivs inom kort!
+
+### Triggningsmetoder: Positiv och negativ flanktriggning
+
+### D-vippan (Edge-triggered D Flip-Flop)
+
+### JK-vippan - den universella vippan
+
+### T-vippan - toogle-vippan för räknare
+
+### Asynkrona ingångar för vippor (Preset och Clear)
