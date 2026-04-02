@@ -115,7 +115,7 @@ Table: Sanningstabell för **halvadderare**. Halvadderaren har två utgångar, e
 
 Som vi ser i @tbl-halvadderare motsvaras summan $S$ av en **XOR**-funktion och carry-signalen $C$ av en **AND**-funktion. Detta är realiserat i övre kretsschemat i @fig-half-adder-full-adder.
 
-![Halvadderare överst (half adder) och heladderare underst (full adder), realiserade med logiska grindar.](images/05-kombinatoriska-kretsar/half_adder_full_adder.png){#fig-half-adder-full-adder width=50%}
+![Halvadderare överst (half adder) och heladderare underst (full adder), realiserade med logiska grindar.](images/05-kombinatoriska-kretsar/half_adder_full_adder.png){#fig-half-adder-full-adder width=76%}
 
 ### Heladderaren (Full-Adder) {#sec-heladderaren}
 
@@ -150,7 +150,7 @@ Denna struktur kallas ofta för en **Ripple Carry Adder** eftersom carry-signale
 
 En 3-bitars adderare kan skapas med en halvadderare för LSB (position 0, det vill säga $2^0$), följt av två stycken heladderare som hanterar positionernna 1 respektive 2. Heladderare behövs för att kunna hantera eventuella "minnessiffror" i additionen. Det går självklart lika bra att bygga med tre stycken heladderare och sätta första carry-signalen $C_{0,in} = 0$.
 
-![3-bitars adderare realiserad med en halvadderare följd av två heladderare.](images/05-kombinatoriska-kretsar/3bit-adder.png){#fig-3bit-adder width=90%}
+![3-bitars adderare realiserad med en halvadderare följd av två heladderare.](images/05-kombinatoriska-kretsar/3bit-adder.png){#fig-3bit-adder}
 :::
 
 #### Carry Look-Ahead (CLA) – Snabbare addition {#sec-carry-look-ahead}
@@ -214,14 +214,14 @@ Table: Sanningstabell för en 2-till-1 multiplexer. {#tbl-2-to-1-multiplexer}
 
 | $S$ (Styr) | $D_1$ | $D_0$ | **$Y$ (Ut)** | Beskrivning |
 |:---:|:---:|:---:|:---:|:---|
-| 0 | 0 | **0** | **0** | $S=0$, utgången följer $D_0$ |
-| 0 | 0 | **1** | **1** | $S=0$, utgången följer $D_0$ |
-| 0 | 1 | **0** | **0** | $S=0$, utgången följer $D_0$ |
-| 0 | 1 | **1** | **1** | $S=0$, utgången följer $D_0$ |
-| 1 | **0** | 0 | **0** | $S=1$, utgången följer $D_1$ |
-| 1 | **0** | 1 | **0** | $S=1$, utgången följer $D_1$ |
-| 1 | **1** | 0 | **1** | $S=1$, utgången följer $D_1$ |
-| 1 | **1** | 1 | **1** | $S=1$, utgången följer $D_1$ |
+| 0 | 0 | 0 | 0 | $S=0$, utgången följer $D_0$ |
+| 0 | 0 | 1 | 1 | $S=0$, utgången följer $D_0$ |
+| 0 | 1 | 0 | 0 | $S=0$, utgången följer $D_0$ |
+| 0 | 1 | 1 | 1 | $S=0$, utgången följer $D_0$ |
+| 1 | 0 | 0 | 0 | $S=1$, utgången följer $D_1$ |
+| 1 | 0 | 1 | 0 | $S=1$, utgången följer $D_1$ |
+| 1 | 1 | 0 | 1 | $S=1$, utgången följer $D_1$ |
+| 1 | 1 | 1 | 1 | $S=1$, utgången följer $D_1$ |
 
 Styrsignalen kommer alltså bestämma om $D0$ eller $D1$ når utgången.  
 
@@ -281,10 +281,10 @@ Table: Förenklad sanningstabell för en 1-till-4 demultiplexer. $D$ är ingång
 
 | $S_1$ | $S_0$ | $Y_3$ | $Y_2$ | $Y_1$ | $Y_0$ | Vald utgång |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---|
-| 0 | 0 | 0 | 0 | 0 | **D** | $Y_0 = D$ |
-| 0 | 1 | 0 | 0 | **D** | 0 | $Y_1 = D$ |
-| 1 | 0 | 0 | **D** | 0 | 0 | $Y_2 = D$ |
-| 1 | 1 | **D** | 0 | 0 | 0 | $Y_3 = D$ |
+| 0 | 0 | 0 | 0 | 0 | D | $Y_0 = D$ |
+| 0 | 1 | 0 | 0 | D | 0 | $Y_1 = D$ |
+| 1 | 0 | 0 | D | 0 | 0 | $Y_2 = D$ |
+| 1 | 1 | D | 0 | 0 | 0 | $Y_3 = D$ |
 
 För att realisera detta i hårdvara använder vi fyra AND-grindar med tre ingångar vardera:
 
@@ -302,7 +302,7 @@ I praktiska system, som t.ex. inom telekommunikationssystem eller inuti en dator
 <!-- ---------------------------------------------------------------------------------------------------- -->
 ## Avkodare (Decoders) {#sec-avkodare}
 
-En **avkodare** är en kombinatorisk krets som har $n$ ingångar och upp till $2^n$ utgångar. Dess huvudsakliga uppgift är att identifiera (avkoda) den binära kombinationen på ingången genom att aktivera **en** unik utgång, eller **en unik kombination** av utgångar. Ett exempel på användningsområde är inuti en dator eller mikrokontroller där avkodare kan användas för **adressavkodning**. Vissa processorer och arkitekturer har bara en adressbuss men flera olika komponenter (RAM, ROM, I/O-portar) som är kopplade till bussen, så här används en avkodare för att välja vilken komponent som ska "lyssna".
+En **avkodare** är en kombinatorisk krets som har $n$ ingångar och upp till $2^n$ utgångar. Dess huvudsakliga uppgift är att identifiera (avkoda) den binära kombinationen på ingången genom att aktivera *en* unik utgång, eller *en unik kombination* av utgångar. Ett exempel på användningsområde är inuti en dator eller mikrokontroller där avkodare kan användas för **adressavkodning**. Vissa processorer och arkitekturer har bara en adressbuss men flera olika komponenter (RAM, ROM, I/O-portar) som är kopplade till bussen, så här används en avkodare för att välja vilken komponent som ska "lyssna".
 
 Man kan se avkodaren som motsatsen till en enkodare, eller som en demultiplexer där dataingången är fastlåst till en logisk etta.
 
@@ -313,10 +313,10 @@ Table: Binäravkodaren för 2 bitar. {#tbl-2-till-4-avkodare}
 
 | $A_1$ | $A_0$ | $Y_3$ | $Y_2$ | $Y_1$ | $Y_0$ | Vald utgång |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---|
-| 0 | 0 | 0 | 0 | 0 | **1** | $Y_0$ (noll) |
-| 0 | 1 | 0 | 0 | **1** | 0 | $Y_1$ (ett) |
-| 1 | 0 | 0 | **1** | 0 | 0 | $Y_2$ (två) |
-| 1 | 1 | **1** | 0 | 0 | 0 | $Y_3$ (tre) |
+| 0 | 0 | 0 | 0 | 0 | 1 | $Y_0$ (noll) |
+| 0 | 1 | 0 | 0 | 1 | 0 | $Y_1$ (ett) |
+| 1 | 0 | 0 | 1 | 0 | 0 | $Y_2$ (två) |
+| 1 | 1 | 1 | 0 | 0 | 0 | $Y_3$ (tre) |
 
 Implementeringen av en binäravkodare är i praktiken en samling **AND-grindar** där varje grind är "programmerad" med hjälp av inverterare för att känna igen en unik binär kombination. 
 
@@ -345,19 +345,19 @@ Viktigt att notera med 74LS42 och många andra avkodare är att de använder **A
 
 Table: Förenklad sanningstabell för BCD-till-decimal-avkodare (Active Low)
 
-| Decimalt | BCD-kod (D C B A) | Aktiv utgång (Låg) | Alla andra utgångar |
-|:---:|:---:|:---|:---|
-| 0 | 0 0 0 0 | **$Y_0$** | Höga |
-| 1 | 0 0 0 1 | **$Y_1$** | Höga |
-| 2 | 0 0 1 0 | **$Y_2$** | Höga |
-| 3 | 0 0 1 1 | **$Y_3$** | Höga |
-| 4 | 0 1 0 0 | **$Y_4$** | Höga |
-| 5 | 0 1 0 1 | **$Y_5$** | Höga |
-| 6 | 0 1 1 0 | **$Y_6$** | Höga |
-| 7 | 0 1 1 1 | **$Y_7$** | Höga |
-| 8 | 1 0 0 0 | **$Y_8$** | Höga |
-| 9 | 1 0 0 1 | **$Y_9$** | Höga |
-| 10–15 | > 1 0 0 1 | **Ingen** | Samtliga är Höga |
+| Decimalt | BCD-kod | Aktiv utgång (Låg) | Alla andra utgångar |
+|:--:|:--:|:---|:---|
+| 0 | 0 0 0 0 | $Y_0$ | Höga |
+| 1 | 0 0 0 1 | $Y_1$ | Höga |
+| 2 | 0 0 1 0 | $Y_2$ | Höga |
+| 3 | 0 0 1 1 | $Y_3$ | Höga |
+| 4 | 0 1 0 0 | $Y_4$ | Höga |
+| 5 | 0 1 0 1 | $Y_5$ | Höga |
+| 6 | 0 1 1 0 | $Y_6$ | Höga |
+| 7 | 0 1 1 1 | $Y_7$ | Höga |
+| 8 | 1 0 0 0 | $Y_8$ | Höga |
+| 9 | 1 0 0 1 | $Y_9$ | Höga |
+| 10–15 | > 1 0 0 1 | Ingen | Samtliga är Höga |
 
 Dessa kretsar används ofta i äldre kontrollsystem eller för att styra specifika indikatorer där man vill visa en siffra i taget, men inte nödvändigtvis på en 7-segmentsdisplay. Ett klassiskt exempel är drivning av **Nixie-rör**, där varje utgång från avkodaren tänder en specifik siffra inuti gasröret.
 

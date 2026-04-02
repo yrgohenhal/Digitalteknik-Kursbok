@@ -20,7 +20,7 @@ Detta exempel med switchar och lampa visar fundamenten i digital systemdesign:
 <!-- ---------------------------------------------------------------------------------------------------- -->
 ## Grinden som abstraktion
 
-När vi ritar digitala system använder vi oss av en **abstraktion**. Vi behöver inte bekymra oss om exakt hur transistorerna inuti en krets fungerar för att kunna designa en maskin – vi fokuserar på den logiska funktionen.
+När vi ritar digitala system använder vi oss av en **abstraktion**. Vi behöver inte bekymra oss om exakt hur transistorerna inuti en krets fungerar för att kunna designa en maskin – vi fokuserar på den logiska funktionen. Abstraktion sker även successivt på högre nivåer - när vi förstår hur en grind fungerar och kombinerar dem till mer komplexa byggblock kommer vi inte bry oss så mycket om nätet av grindar utan mer fokusera på byggblockets funktioner.
 
 En grind är alltså en "svart låda" med förutsägbara egenskaper. Genom att kombinera dessa enkla grindar kan vi skapa allt från enkla räknare till extremt komplexa processorer. I kommande avsnitt ska vi lära oss hur vi systematiskt beskriver vad som händer inuti dessa "svarta lådor" med hjälp av sanningstabeller.
 
@@ -29,7 +29,7 @@ En grind är alltså en "svart låda" med förutsägbara egenskaper. Genom att k
 
 För att slippa rita kretsscheman varje gång vi vill förstå en funktion använder vi **sanningstabeller**. En sanningstabell är en matematisk tabell som listar alla tänkbara kombinationer av insignaler (A och B) och visar vad den resulterande utsignalen (Q) blir för varje scenario.
 
-Det fina med en sanningstabell är att den är uttömmande. Om vi har $n$ stycken insignaler, kommer tabellen alltid att ha $2^n$ rader. För våra två grundläggande grindar innebär det $2^2 = 4$ möjliga kombinationer.
+Det fina med en sanningstabell är att den är uttömmande. Om vi har $n$ stycken insignaler, kommer tabellen alltid att ha $2^n$ rader. För våra två grundläggande grindar innebär det $2^2 = 4$ möjliga kombinationer. Ibland sker dock förenklingar där flera rader med likartade egenskaper kombineras till en enskild rad.
 
 ### Sanningstabell för AND-grinden
 
@@ -148,7 +148,7 @@ NOR-grinden är tillsammans med NAND-grinden unika eftersom man genom att kombin
 
 ### XOR och XNOR
 
-**XOR (Exklusivt ELLER)** ger 1 när insignalerna är *olika*. **XNOR** (NOT-XOR) ger 1 när insignalerna är *lika*.
+**XOR-grinden** (Exklusivt ELLER) ger 1 när insignalerna är *olika*. **XNOR-grinden** (NOT-XOR) ger 1 när insignalerna är *lika*.
 
 Table: Sanningstabell för XOR och XNOR {#tbl-xor-xnor}
 
@@ -169,16 +169,16 @@ För de flesta grindar (som AND och OR) är utökningen till fler ingångar intu
 ::: {.callout-important}
 ## XOR och XNOR med fler än två ingångar
 
-Det är lätt att tro att en XOR-grind med tre ingångar ger 1 om *exakt en* ingång är 1. Den korrekta definitionen är dock att XOR-grinden fungerar som en **udda-funktion** (odd parity):
+Det är lätt att tro att en XOR-grind med tre ingångar ger 1 om *exakt en* ingång är 1. Den korrekta definitionen är dock att XOR-grinden fungerar som en **udda-funktion** (**odd parity**):
 
-* Utgången är 1 om ett **udda antal** ingångar är 1.
-* Utgången är 0 om ett **jämnt antal** ingångar är 1.
+* Utgången är 1 om ett *udda antal* ingångar är 1.
+* Utgången är 0 om ett *jämnt antal* ingångar är 1.
 
 Detta innebär att $A \oplus B \oplus C$ blir 1 om antingen en eller alla tre ingångar är 1.
 :::
 
 
-För XNOR-grinden är logiken den omvända: den fungerar som en **jämn-funktion** (even parity) och ger 1 om ett jämnt antal ingångar är 1 (inklusive noll ingångar).
+För XNOR-grinden är logiken den omvända: den fungerar som en **jämn-funktion** (**even parity**) och ger 1 om ett jämnt antal ingångar är 1 (inklusive noll ingångar).
 
 
 ::: {.callout-note}
@@ -198,6 +198,7 @@ Table: Sanningstabell för 3-ingångars XOR {#tbl-xor-3-in}
 | 1 | 1 | 1 | 1 |
 
 När vi utökar XOR-grinden till tre ingångar ($A \oplus B \oplus C$) lämnar vi den enkla "en-av-tre"-logiken bakom oss. Istället ser vi att utsignalen $Q$ blir 1 endast när antalet ettor på ingångarna är udda. Som tabellen i @tbl-xor-3-in visar, får vi en hög utsignal ($Q=1$) i följande fall:
+
 * Precis en ingång är 1 (rad 2, 3, 5).
 * Alla tre ingångarna är 1 (rad 8).
 
@@ -210,7 +211,8 @@ Detta bekräftar definitionen av XOR som en "udda-funktion". Om vi skulle addera
 För att bygga digital elektronik för enklare applikationer i verkligheten använder vi integrerade kretsar. Den mest klassiska familjen är **7400-serien**, där kapslar ofta innehåller "Quad"-logik, det vill säga fyra grindar i samma hus. Dessa klassiska kretsar användes förr i stor skala för att bygga upp komplexa digitala lösningar. Idag så byggs mer komplex digitalelektronik primärt med **FPGA** (field-programmable gate array) eller **ASIC** (application-specific integrated circuit), där logiken beskrivs med hårdvarubeskrivande språk som VHDL eller Verilog. Men 7400-serien är fortfarande mycket användbar inom exempelvis embeddedområdet när man behöver skapa enklare digitala funktioner.
 
 Det är dock viktigt att förstå att 7400-serien omfattar massor av olika kretsar, inte bara grindar. Några exempel är:
-* **Flip-flops och register:** För att lagra binär information.
+
+* **Flip-flops** och **register:** För att lagra binär information.
 * **Räknare:** För att skapa klockade sekvenser.
 * **Multiplexer:** För att välja mellan olika insignaler.
 
@@ -218,13 +220,13 @@ Table: Klassiska grind-kretsar i 7400-serien {#tbl-7400-gates}
 
 | Krets | Funktion | Antal grindar |
 | :--- | :--- | :--- |
-| **7400** | NAND-grindar (2-ingångar) | 4 |
-| **7402** | NOR-grindar (2-ingångar) | 4 |
-| **7404** | Inverterare (NOT) | 6 |
-| **7408** | AND-grindar (2-ingångar) | 4 |
-| **7432** | OR-grindar (2-ingångar) | 4 |
-| **7486** | XOR-grindar (2-ingångar) | 4 |
-| **74266** | XNOR-grindar (2-ingångar) | 4 |
+| 7400 | NAND-grindar (2-ingångar) | 4 |
+| 7402 | NOR-grindar (2-ingångar) | 4 |
+| 7404 | Inverterare (NOT) | 6 |
+| 7408 | AND-grindar (2-ingångar) | 4 |
+| 7432 | OR-grindar (2-ingångar) | 4 |
+| 7486 | XOR-grindar (2-ingångar) | 4 |
+| 74266 | XNOR-grindar (2-ingångar) | 4 |
 
 
 ::: {.callout-note}
@@ -232,19 +234,19 @@ Table: Klassiska grind-kretsar i 7400-serien {#tbl-7400-gates}
 
 För att realisera vårt exempel med ADAS-system från @sec-logiska-grindar i hårdvara använder vi oss av två olika 14-pinnars kretsar ur 7400-serien. Detta är ett utmärkt exempel på hur vi kombinerar olika "Quad-logik"-kretsar för att skapa en funktionell enhet. ADAS-systemet kunde skrivas som ($Q = A + (B \cdot C)$), dvs. en AND-funktion som kombinerar två ingångar (radar B och kamera C) som går vidare till en OR-funktion som kombinerar AND-grindens utgång med ytterligare en ingång (föraren A).
 
-**Komponentval**
+Komponentval:
 
-* **7408 (Quad 2-input AND):** Vi använder en av de fyra grindarna för att kombinera **Radar (B)** och **Kamera (C)**.
-* **7432 (Quad 2-input OR):** Vi använder en av de fyra grindarna för att summera AND-grindens utgång med **Förarens input (A)**.
+* 7408 (Quad 2-input AND): Vi använder en av de fyra grindarna för att kombinera *Radar (B)* och *Kamera (C)*.
+* 7432 (Quad 2-input OR): Vi använder en av de fyra grindarna för att summera AND-grindens utgång med *Förarens input (A)*.
 
-**Kopplingsbeskrivning** 
+Kopplingsbeskrivning: 
 
-1.  **Radar (B)** och **Kamera (C)** ansluts till ingångarna på en grind i 7408-kretsen (t.ex. pin 1 och 2).
+1.  *Radar (B)* och *Kamera (C)* ansluts till ingångarna på en grind i 7408-kretsen (t.ex. pin 1 och 2).
 2.  Utgången från denna AND-grind (t.ex. pin 3) kopplas till en av ingångarna på en grind i 7432-kretsen (t.ex. pin 1).
-3.  **Föraren (A)** kopplas till den andra ingången på samma OR-grind i 7432-kretsen (pin 2).
-4.  Utgången på OR-grinden (pin 3 på 7432) ger oss den slutgiltiga **Bromssignalen (Q)**.
+3.  *Föraren (A)* kopplas till den andra ingången på samma OR-grind i 7432-kretsen (pin 2).
+4.  Utgången på OR-grinden (pin 3 på 7432) ger oss den slutgiltiga *Bromssignalen (Q)*.
 
-![Kretsschema för logiska funktionen för ett ADAS-system.](images/03-logiska-grindar/ADAS_realization.png){#fig-ADAS width=50%}
+![Kretsschema för logiska funktionen för ett ADAS-system.](images/03-logiska-grindar/ADAS_realization.png){#fig-ADAS width=47%}
 
 Table: Kopplingsöversikt för ADAS-system {#tbl-adas-wiring}
 
@@ -259,6 +261,6 @@ Table: Kopplingsöversikt för ADAS-system {#tbl-adas-wiring}
 
 ::: {.callout-important}
 ## Hantering av oanvända grindar
-Eftersom 7408 och 7432 i exemplet ovan båda är "Quad"-kretsar har vi tre grindar över i varje kapsel som inte används. Kom ihåg att **oanvända ingångar aldrig får lämnas flytande (oanslutna)**. En flytande ingång fungerar som en antenn för elektriskt brus. Koppla dessa ingångar till antingen jord ($0\text{V}$) eller matningsspänning ($+5\text{V}$) för att undvika att kretsen börjar bete sig konstigt.
+Eftersom 7408 och 7432 i exemplet ovan båda är "Quad"-kretsar har vi tre grindar över i varje kapsel som inte används. Kom ihåg att *oanvända ingångar aldrig får lämnas flytande (oanslutna)*. En flytande ingång fungerar som en antenn för elektriskt brus. Koppla dessa ingångar till antingen jord ($0\text{V}$) eller matningsspänning ($+5\text{V}$) för att undvika att kretsen börjar bete sig konstigt.
 :::
 

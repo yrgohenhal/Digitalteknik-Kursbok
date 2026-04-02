@@ -33,8 +33,8 @@ $$432_{10} = 110110000_2$$
 
 För att förstå hur detta tal är uppbyggt behöver vi bara placera ut våra "bitar" på deras respektive platser (potenser av 2). Varje **1** representerar att den potensen ingår i summan, medan **0** betyder att den utelämnas:
 
-| Position ($2^n$) | $2^8$ | $2^7$ | $2^6$ | $2^5$ | $2^4$ | $2^3$ | $2^2$ | $2^1$ | $2^0$ |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Pos. ($2^n$) | $2^8$ | $2^7$ | $2^6$ | $2^5$ | $2^4$ | $2^3$ | $2^2$ | $2^1$ | $2^0$ |
+| :---: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | **Värde** | 256 | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
 | **Bit** | **1** | **1** | **0** | **1** | **1** | **0** | **0** | **0** | **0** |
 

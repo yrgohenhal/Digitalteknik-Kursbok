@@ -4,13 +4,13 @@ Digitaltekniken är fundamentet för det moderna samhället. Genom att represent
 information som diskreta tillstånd – oftast som binära värden $0$ och $1$ – 
 har vi skapat system som kan hantera data med hög precision.
 
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Historisk bakgrund
 * **George Boole:** Lade grunden för boolesk algebra på 1800-talet.
 * **Radiorör:** Användes i tidiga datorer som ENIAC.
 * **Transistorn (1947):** Den elektroniska strömbrytare som möjliggjorde dagens miniatyrisering.
 
-
-
+<!-- ---------------------------------------------------------------------------------------------------- -->
 ## Varför digitalteknik?
 
 | Egenskap | Analog teknik | Digital teknik |
@@ -20,3 +20,22 @@ har vi skapat system som kan hantera data med hög precision.
 | **Flexibilitet** | Hårdvarubunden | Programvarubunden |
 
 Digitala system bygger på förmågan att tolka spänningsnivåer som logiska värden. När bara två spänningsnivåer (låg och hög) ska tolkas jämfört med analogtekniken där kontinuerliga spänningar ska hanteras, skapas en robust elektronik!
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+## Implementationsformer: Från diskreta grindar till kisel
+När vi har tagit fram vår logiska konstruktion måste den realiseras i fysisk hårdvara. Beroende på applikationens krav väljer vi olika vägar:
+
+* **7400-serien** (diskreta kretsar): Består av färdiga standardlogikkretsar med några få grindar i varje kapsling. Lämplig för enklare digitaltekniska lösningar där tillverkningskostnad behöver hållas nere. Detta är utmärkt för experiment och enkel logik, men kan ta stor plats på kretskortet om det är mer komplex logik.
+* **FPGA** (Field Programmable Gate Array): En omprogrammerbar krets där vi kan definiera hårdvarustrukturen genom kod. Det ger en enorm flexibilitet och möjliggör prototypframtagning av komplexa system utan att behöva tillverka ett eget chip. Passsar för avancerad digitalteknik i små volymer.
+* **ASIC** (Application-Specific Integrated Circuit): Ett skräddarsytt chip som optimerats för en specifik uppgift. Det innebär höga utvecklingskostnader, men i gengäld får vi den låg enhetskostnad vid stora volymer. Dessutom ger ASIC minsta storleken och lägsta strömförbrukningen vid massproduktion, i förhållande till prestanda.
+
+<!-- ---------------------------------------------------------------------------------------------------- -->
+## Digitalteknik inom inbyggda system
+Inom inbyggda system (embedded systems) utgör digitaltekniken bron mellan den fysiska omvärlden och mjukvaran. Även om moderna mikrokontrollers är extremt kraftfulla, finns det tillfällen då digital hårdvara med fördel kan ersätta programkod:
+
+* Determinism och hastighet: Mjukvara som körs på en processor styrs av instruktioner, avbrott och schemaläggare, vilket kan skapa en osäkerhet i exakt svarstid. Digital hårdvara arbetar parallellt och deterministiskt; en grind reagerar med väldigt kort fördröjning när signalen förändras.
+* Realtidskrav: I system där nanosekunder räknas – exempelvis i avancerad signalbehandling eller högfrekvent motorstyrning – hinner en processor inte med att köra kod. Digital hårdvaran är då ett bättre alternativ.
+* Resurseffektivitet: Att låta en processor utföra enkla logiska operationer i en loop är slöseri med energi. Genom att flytta tidskritiska funktioner till hårdvara kan vi minska processorns belastning och sänka systemets totala energiförbrukning drastiskt.
+* Hårdvarubegränsningar: En processor för ett inbyggt system behöver ofta hantera flera input/output, vilket kräver många pinnar. En del saker kan då implementeras i digital hprdvara för att spara input/output-pinnar.
+
+Motiveringen är enkel: Mjukvara löser många problem och ger oss flexibilitet och intelligens, men digital hårdvara ger oss kontroll, fart och energieffektivitet. Ett modernt inbyggt system kan kombinera dessa två världar för att skapa en optimerad helhet.
