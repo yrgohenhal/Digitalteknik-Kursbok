@@ -46,7 +46,7 @@ Table: Sanningstabell för AND {#tbl-and}
 
 ### Sanningstabell för OR-grinden{#sec-logiska-grindar}
 
-OR-funktionen (e höger kretsschema i @fig-switch-lampa) kräver att **minst en** av insignalerna är 1 för att utsignalen ska bli 1. Den logiska notationen skrivs ofta som $A + B = Q$.
+OR-funktionen (se höger kretsschema i @fig-switch-lampa) kräver att **minst en** av insignalerna är 1 för att utsignalen ska bli 1. Den logiska notationen skrivs ofta som $A + B = Q$.
 
 Table: Sanningstabell för OR {#tbl-or}
 
@@ -70,7 +70,7 @@ För att förstå hur logiska grindar samverkar i praktiken kan vi studera ett f
 
 Logiken för systemet är att bromsen ska aktiveras om **föraren bromsar** ELLER (om **både radar OCH kamera** indikerar hinder). Matematiskt med Booles algebra kan detta uttryckas som $Q = A + (B \cdot C)$.
 
-Här ser vi hur de olika indata-kombinationerna påverkar bromsaktiveringen. Notera hur de fjärde raden visar hur radarn och kameran tillsammans kan tvinga fram en bromsning även om föraren inte trycker på bromspedalen.
+Här ser vi hur de olika indata-kombinationerna påverkar bromsaktiveringen. Notera hur den fjärde raden visar hur radarn och kameran tillsammans kan tvinga fram en bromsning även om föraren inte trycker på bromspedalen.
 
 Table: Sanningstabell för ADAS-bromsning {#tbl-adas}
 
@@ -97,7 +97,7 @@ Inom digitaltekniken används två huvudstandarder för att rita grindar: **IEC*
 
 ![Översikt över logiska grindar: Buffer, NOT (INV = invertering), AND, NAND, OR, NOR, XOR (Exklusivt ELLER) och XNOR. \protect\newline Källa: Modifierad från [User:Stefan506](https://de.wikipedia.org/wiki/User:Stefan506) CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=460661](images/03-logiska-grindar//Logic-gate-index.png){#fig-gate-index width=100%}
 
-Som vi ser i @fig-gate-index representerar varje grind en unik logisk operation. En central princip att notera är **inverteringsbubblan** (den lilla cirkeln vid utgången), som i ett kopplingsschema indikerar en NOT-operation.
+Som vi ser i @fig-gate-index representerar varje grind en unik logisk operation. En central princip att notera är **inverteringsbubblan** (den lilla cirkeln vid utgången), som i ett kopplingsschema indikerar en NOT-operation. Tänk på att symbolerna inte visar spänningsmatningen till kretsen! Grindarna kräver anslutning till spänning (ofta GND och +5 V DC) för att kunna fungera. Databladen anger var dessa ska kopplas in.
 
 Vilka symboler ska man lära sig? Det enkla och jobbiga svaret är både europeisk och amerikansk standard (ANSI/IEEE). Båda varianterna stöter man på i olika sorters dokumentation. I denna bok kommer amerikanska symboler användas, eftersom de finns i datablad för digitaltekniska kretsar.
 

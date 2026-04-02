@@ -43,7 +43,7 @@ Table: Logiska operationer och notation. Tabellen visar standardnotation och alt
 
 I denna litteratur används standardnotationen.
 
-För att tolka notationen på ett korrekt sätt behövs vissa räkneregler som vi till stor känner igen från den vanliga algebran.
+För att tolka notationen på ett korrekt sätt behövs vissa räkneregler som vi till stor del känner igen från den vanliga algebran.
 
 * *Prioritetsordning:* Precis som i vanlig matematik ($1 + 2 \cdot 3$) finns en prioriteringsordning. NOT (invertering) utförs alltid först, följt av AND (multiplikation), och sist OR (addition).
 * *Parenteser:* Om du vill styra ordningen, använd parenteser precis som i vanlig algebra. Exempel: $(A + B) \cdot C$ innebär att OR-operationen sker före AND.
@@ -163,7 +163,7 @@ I praktiken kommer du oftast att använda mintermer för att ställa upp din fö
 
 När vi har översatt ett logiskt problem till ett matematiskt uttryck får vi ofta en lösning som är komplex och kräver onödigt många grindar. För att bygga en effektiv krets använder vi Boolesk algebra för att förenkla uttrycket. Här är de grundläggande verktygen vi använder för att manipulera våra uttryck.
 
-Table: Grundläggande Booleska lagar. Viktiga lagar är **Identitet**, **Noll- och ett-lag**, **Idempotens**, **Invertering** samt **Dubbel negation**.{#tbl-booleska_grundlagar}
+Table: Grundläggande Booleska lagar. Viktiga lagar är **Identitet**, **Noll- och ett-lag**, **Idempotens**, **Invertering** samt **Dubbel negation**. {#tbl-booleska_grundlagar}
 
 | Lag | AND-form | OR-form |
 | :--- | :- | :- |
@@ -397,7 +397,7 @@ Table: Sanningstabell, där mintermer identifieras. {#tbl-tt-example-with-karnau
 | 1 | 0 | $A \cdot \overline{B}$ | 1 |
 | 1 | 1 | $A \cdot B$ | 1 |
 
-Men det kan visualiseras i ett Karnaughdiagram istället, där vi helt enkelt in två intilliggande ettor i diagrammet. Om en variabel byter värde inom en grupp (t.ex. går från 0 till 1), så elimineras den automatiskt. Det är som att göra algebraisk förenkling, fast med mönsterigenkänning istället för räkneregler.
+Men det kan visualiseras i ett Karnaughdiagram istället, där vi helt enkelt identifierar två intilliggande ettor i diagrammet. Om en variabel byter värde inom en grupp (t.ex. går från 0 till 1), så elimineras den automatiskt. Det är som att göra algebraisk förenkling, fast med mönsterigenkänning istället för räkneregler.
 
 ![Karnaughdiagram för sanningstabellen i @tbl-tt-example-with-karnaugh.](images/04-boolesk-algebra/K_map_example_2inputs.png){#fig-example-with-karnaugh width=17%}
 
@@ -407,7 +407,7 @@ Genom att visualisera sanningstabellen i ett Karnaughdiagram och identifiera rut
 
 När vi arbetar med Karnaughdiagram följer vi tre huvudregler:
 
-1. *Storleken spelar roll:* Vi vill skapa så stora grupper som möjligt i multipler av 2 ($1, 2, 4, 8, 16$).
+1. *Storleken spelar roll:* Vi vill skapa så stora grupper som möjligt i potenser av 2 ($1, 2, 4, 8, 16$).
 2. *Endast närliggande:* Vi får bara ringa in ettor som ligger vägg-i-vägg (horisontellt eller vertikalt). Vi letar alltså efter rektangulärt formade inringningar.
 3. *Inga diagonaler:* Grupper får aldrig bildas diagonalt. Notera! XOR och XNOR syns som diagonala "schackrutemönster" i ett Karnaughdiagram. Karnaughdiagram används alltså för att hitta OR- och AND-strukturer.
 

@@ -4,7 +4,7 @@ project:
 book:
   title: "Digitalteknik"
   author: "Henrik Hallenberg"
-  date: "2026-03-31"
+  date: "2026-04-02"
   chapters:
     - index.qmd
     - 01-introduktion.qmd
@@ -64,7 +64,7 @@ format:
 
         \fancypagestyle{framsida}{
           \fancyhf{}
-          \fancyfoot[L]{Rev: 0.5}
+          \fancyfoot[L]{Rev: 0.51}
           \fancyfoot[C]{\thepage}
           \fancyfoot[R]{Henrik Hallenberg}
           \renewcommand{\footrulewidth}{0.4pt}
