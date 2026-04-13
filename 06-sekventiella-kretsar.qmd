@@ -210,16 +210,17 @@ JK-vippan löser SR-latchens problem med det förbjudna tillståndet genom att i
 
 Anledningen till att JK-vippan ofta kallas universell är att den enkelt kan konfigureras för att utföra andra vippors jobb:
 
-* **Som en D-vippa:** Koppla en inverterare mellan $J$ och $K$ och använd $J$ som dataingång.
-* **Som en T-vippa:** Koppla ihop $J$ och $K$ till en gemensam ingång.
+* *Som en D-vippa:* Koppla en inverterare mellan $J$ och $K$ och använd $J$ som dataingång.
+* *Som en T-vippa:* Koppla ihop $J$ och $K$ till en gemensam ingång.
 
 ### T-vippan - toogle-vippan för räknare
 
 T-vippan (där T står för **Toggle**) har bara en enda dataingång. Dess enda uppgift är att hålla reda på om den ska behålla sitt nuvarande värde eller "slå om" (invertera) vid nästa klockflank. Se timingdiagrammet i @fig-timing-tff.
 
 Logiken är extremt rak:
-* Om $T=0$, händer ingenting vid klockflanken (**Minne**).
-* Om $T=1$, byter utgången tillstånd vid klockflanken (**Toggle**).
+
+* Om $T=0$, händer ingenting vid klockflanken (*Minne*).
+* Om $T=1$, byter utgången tillstånd vid klockflanken (*Toggle*).
 
 Table: Förenklad sanningstabell för positivt flanktriggad T-vippa. {#tbl-T-flipflop}
 
@@ -235,7 +236,7 @@ Egenskapen att toggla vid varje positiv klockflank gör den till hjärtat i näs
 
 ::: {.callout-note}
 ## JK-vippan som T-vippa
-I praktiken köper man sällan en ren "T-vippa" som en enskild krets. Istället skapar man den genom att använda en **JK-vippa** där man kopplar samman $J$ och $K$ till en gemensam $T$-ingång, eller en **D-vippa** där man återkopplar den inverterade utgången $\overline{Q}$ till $D$-ingången.
+I praktiken köper man sällan en ren "T-vippa" som en enskild krets. Istället skapar man den genom att använda en JK-vippa där man kopplar samman $J$ och $K$ till en gemensam $T$-ingång, eller en D-vippa där man återkopplar den inverterade utgången $\overline{Q}$ till $D$-ingången.
 :::
 
 
@@ -271,7 +272,7 @@ I kretsschema så ritas latchar och vippor med förenklade symboler, dvs. de rit
 
 Aktivt låga signaler anges med en inverteringsring alternativt med överstreck. Då klocksignal används (vippor) anges detta med en triangel i symbolen. Amerikansk och europeisk standard har samma utseende på schemasymbolerna. Se några exempel i @fig-SR-symbol till @fig-JK-flipflop.
 
-/newline
+\newpage
 
 ![Kretsschemasymbol för en SR-latch med Set och Reset aktivt höga. Källa: Av jjbeard - Own Drawing in Inkscape 0.43, Public Domain, https://commons.wikimedia.org/w/index.php?curid=873595](images/06-sekventiella-kretsar/SR_IEC_symbol.png){#fig-SR-symbol width=15%}
 
@@ -282,5 +283,137 @@ Aktivt låga signaler anges med en inverteringsring alternativt med överstreck.
 ![Kretsschemasymbol för en JK-vippa. Källa: By Inductiveload - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=6693391](images/06-sekventiella-kretsar/JK_IEC_symbol.png){#fig-JK-flipflop width=15%}
 
 
+\newpage
+
+
+## Från vippa till register
+En enskild D-vippa kan bara lagra en enda bit (en $0$ eller en $1$). För att kunna hantera användbar information, som ett tal eller en textkaraktär, behöver vi kunna lagra flera bitar samtidigt. 
+
+När vi kopplar samman flera vippor så att de styrs av en gemensam klocksignal, skapar vi ett **register**.
+
+### Parallellregister – Digitalteknikens korttidsminne
+Ett **parallellregister** är den enklaste formen av lagring och utgör grunden för hur data hanteras i en processor. Om vi exempelvis vill lagra en 4-bitars binärkod (en "nibble"), använder vi fyra stycken D-vippor.
+
+* *Gemensam klocka:* Alla vippors klockingångar (`C`) är ihopkopplade till samma klocksignal. Det gör att hela registret uppdateras exakt samtidigt.
+* *Momentan lagring:* Vid en positiv klockflank läser alla vippor in värdet på sina respektive $D$-ingångar. 
+* *Stabilitet:* Så länge ingen ny klockflank sker, kommer registret att *hålla kvar* bitmönstret på utgångarna ($Q_3, Q_2, Q_1, Q_0$), oavsett om signalerna på ingångarna ändras. Detta kallas att datat är "latched" eller låst.
+
+
+
+### Skillnaden mellan register och primärminne (RAM)
+Det är lätt att blanda ihop begreppen, men i professionella sammanhang skiljer man noga på dem:
+
+1.  **Register:** Sitter inbyggda direkt i processorns logik (närmast beräkningsenheterna). De är extremt snabba och används för data som behandlas *just nu*. De har oftast namn som `Register A` eller `R0`.
+2.  **Minne (RAM):** Är en separat enhet (eller ett större block på chippet) som rymmer miljontals bytes. Det är långsammare än register men kan lagra stora mängder data, såsom programkod och filer, som väntar på att bli behandlade.
+
+
+::: {.callout-tip}
+## Varför kallas det register?
+Tänk på det som ett fysiskt register eller ett formulär: du skriver ner ett värde i en ruta och det står kvar där tills du suddar ut det och skriver något nytt vid nästa givna tillfälle (klockflanken).
+:::
+
+
+::: {.callout-note}
+## Fördjupning: Är register samma sak som RAM?
+
+När vi pratar om **RAM** (Random Access Memory) i en dator, syftar vi på stora mängder lagring där varje plats har en specifik adress. Men tekniskt sett finns det två helt olika sätt att bygga detta "minne" på:
+
+1. **SRAM (Static RAM):** Bygger på samma princip som våra **register**. Varje minnescell består av en krets med transistorer som fungerar som en vippa (latch). Så länge strömmen är på, står värdet kvar stadigt. Det är extremt snabbt men tar mycket plats på chippet. Detta används i processorns **cache-minne**.
+
+
+
+2. **DRAM (Dynamic RAM):** Detta är vad som sitter på de vanliga minnesstickorna i en dator. Här har man bytt ut vippan mot en **kondensator** (en mikroskopisk komponent som kan lagra elektrisk laddning). 
+   * En laddad kondensator tolkas som `1`.
+   * En urladdad kondensator tolkas som `0`.
+
+Eftersom kondensatorer läcker ström, måste detta minne *uppdateras* (refresh) tusentals gånger per sekund för att inte tappa informationen. Det är betydligt långsammare än register, men gör att vi kan få plats med miljarder bitar på en mycket liten yta till en låg kostnad.
+
+
+
+*Sammanfattningsvis:* **Register** är digitalteknikens snabbaste och mest exklusiva lagring, medan **DRAM** är arbetshästen som möjliggör stora mängder lagringsutrymme.
+:::
+
+
+{{< pagebreak >}}
+
+### Skiftregister – Data i rörelse
+Ett **skiftregister** är en vidareutveckling av det vanliga registret. Istället för att bara lagra bitar, tillåter ett skiftregister att databitarna flyttas ett steg åt höger eller vänster för varje klockflank. Detta är fundamentalt för hur digitala system kommunicerar med omvärlden.
+
+Ett skiftregister byggs genom att kedjekoppla D-vippor, där utgången $Q$ på en vippa kopplas till ingången $D$ på nästa. 
+
+Vid varje positiv klockflank flyttas informationen ett steg framåt i kedjan:
+1. Vippa 1 läser in ett nytt värde från en serieingång.
+2. Vippa 2 tar över det värde som Vippa 1 hade precis *innan* flanken.
+3. Vippa 3 tar över värdet från Vippa 2, och så vidare.
+
+
+
+### Olika typer av skiftregister
+Beroende på hur vi kopplar in- och utgångarna delas de in i fyra huvudkategorier:
+
+* **SISO (Serial-In, Serial-Out):** Data går in på en tråd och ut på en tråd. Används för tidsfördröjning.
+* **SIPO (Serial-In, Parallel-Out):** Data går in seriellt men läses av parallellt. *Viktigt* för att omvandla seriekommunikation till data som en processor kan läsa.
+* **PISO (Parallel-In, Serial-Out):** Data laddas in parallellt och skickas ut bit för bit. Detta används när en dator ska skicka data över en enda kabel.
+* **PIPO (Parallel-In, Parallel-Out):** Fungerar som ett lagringsregister men med möjligheten att skifta datat vid behov.
+
+### Praktiska tillämpningar
+Skiftregister används till mer än bara transport:
+
+1.  **Matematik:** Att skifta ett binärt tal ett steg åt vänster motsvarar en multiplikation med `2`. Ett skift åt höger motsvarar en division med `2`.
+2.  **I/O-expansion:** Genom att använda ett SIPO-register kan du styra många utgångar (t.ex. 8 lysdioder) med bara några få pinnar från en mikrokontroller.
+
+## Skiftregister – Data i rörelse
+
+Ett **skiftregister** är en vidareutveckling av det vanliga registret. Istället för att bara lagra bitar, tillåter ett skiftregister att databitarna flyttas ett steg åt höger eller vänster för varje klockflank. Detta är fundamentalt för hur datorer kommunicerar med omvärlden.
+
+### Grundläggande struktur
+Ett skiftregister byggs genom att kedjekoppla **D-vippor**, där utgången $Q$ på en vippa kopplas till ingången $D$ på nästa. Alla vippor delar på samma klocksignal ($C$).
+
+Vid varje positiv klockflank händer följande:
+1. Vippa 1 läser in värdet från den externa serieingången.
+2. Vippa 2 läser in det värde som Vippa 1 *precis hade*.
+3. Vippa 3 läser in det värde som Vippa 2 *precis hade*.
+
+Efter fyra klockflanker har en bit som matades in i början "vandrat" genom hela registret till den sista utgången.
+
+
+
+### Olika typer av skiftregister
+Beroende på hur vi kopplar in- och utgångarna delas skiftregister in i fyra huvudkategorier:
+
+* **SISO (Serial-In, Serial-Out):** Data matas in en bit i taget och läses ut en bit i taget. Används främst som fördröjningsenheter.
+* **SIPO (Serial-In, Parallel-Out):** Data matas in seriellt, men vi kan läsa av alla vippors utgångar samtidigt. Detta är avgörande för att omvandla en ström av bitar (t.ex. från en sensor) till hela **bytes** som en processor kan förstå.
+* **PISO (Parallel-In, Serial-Out):** Motsatsen till SIPO. Vi laddar in alla bitar samtidigt och skiftar sedan ut dem en och en. Detta används när en dator ska skicka data över en enda kabel.
+* **PIPO (Parallel-In, Parallel-Out):** Fungerar som ett vanligt lagringsregister men med möjligheten att skifta datat om det behövs.
+
+### Varför skifta?
+Skiftregister är inte bara till för transport. De har även matematiska och praktiska tillämpningar:
+
+1.  **Multiplikation och division:** Att skifta ett binärt tal ett steg åt vänster motsvarar att multiplicera det med `2`. Ett skift åt höger motsvarar en division med `2`.
+2.  **Seriell kommunikation:** Standarder som **SPI**, **I2C** och **UART** (som används i nästan alla inbyggda system) bygger helt på skiftregister.
+3.  **I/O-expansion:** Om din mikrokontroller har för få pinnar kan du använda ett SIPO-skiftregister (som den klassiska kretsen `74HC595`) för att styra 8 lysdioder med bara 3 pinnar.
+
+
+
+::: {.callout-note}
+## Tänk på timingen
+I ett skiftregister är det *extremt viktigt* att vipporna är flanktriggade. Om de vore nivåstyrda (latchar) skulle datat "rinna igenom" alla vippor under hela tiden klockan är hög, och vi skulle förlora kontrollen över skiftförloppet.
+:::
+
+
+### Register i ett system: Bussar och kontroll
+I en dator räcker det inte med att bara kunna lagra data; vi måste också kunna styra *när* data ska läsas och *vart* det ska skickas. För att lösa detta använder vi två viktiga kontrollsignaler:
+
+#### Load Enable – Att välja när vi sparar
+I de enklaste registren uppdateras innehållet vid varje klockflank. I praktiken vill vi ofta att ett register ska behålla sitt värde under en längre tid. Genom att lägga till en styrsignal, **Load Enable** (`EN`), kan vi bestämma exakt vid vilken klockflank registret ska läsa in nytt data. Om `EN` är låg, ignorerar registret klockflanken och behåller sitt nuvarande värde.
+
+#### Tri-state – Att dela på utrymmet
+När flera register är kopplade till en gemensam **databuss** (en grupp ledningar som delas av många komponenter), får bara ett register i taget "prata". Om två register skickar ut olika värden samtidigt uppstår en konflikt.
+
+För att lösa detta utrustas register med **tri-state-utgångar**. Utöver logisk `0` och `1`, kan utgången försättas i ett tredje tillstånd: **High-Z** (högimpedans). I detta läge är registret elektriskt bortkopplat från bussen och "stör" inte de andra komponenterna. Signalen som styr detta kallas ofta **Output Enable** (`OE`).
+
+
+
+*Sammanfattningsvis:* Med `Load` styr vi vad som går **in** i registret, och med `Output Enable` styr vi vad som går **ut** på bussen.
 
 
