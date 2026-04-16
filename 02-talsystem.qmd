@@ -393,7 +393,7 @@ $1 \cdot 2^7 = 128_{10}$.
 :::
 
 
-### Signed (Signed-Magnitude, Tecken-belopp)
+### Signed (Signed-Magnitude, Signerat, Tecken-belopp)
 
 MSB (den mest signifikanta biten) används som teckenbit ($0 = +, 1 = -$). 
 
